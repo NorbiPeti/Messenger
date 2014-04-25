@@ -1,0 +1,25 @@
+Less Closed Beta - v1.0 - 2014.04.18., 19., 24., 25.
+----
+- Névjegy elkészítve, csinosítva
+- Nyelvi fájlok kezelése, fordítási lehetõség
+- Kisebb hibajavítások és még:
+-- "Hiba az ismerõslista frissítésekor" üzenet javítva, és általánosítva
+-- Most már az aktuális idõzónának megfelelõ idõpontot írja az üzeneteknél
+-- A mûveletek menübõl indított beszélgetések most már nem az ablak mögött jelennek meg (kódátrendezés)
+- Mindig legfelül opció mûködõképes
+- Beállítások
+-- Automatikusan a kiválasztott menüponthoz ugrik
+-- Ennek kapcsán most már egyáltalán tudja a kliens az aktuális felhasználó információit (név, üzenet, stb.)
+-- Név- és üzenetváltoztatás
+- Frissítésellenõrzés: Ha kész lesz ez a verzió, erre fog hivatkozni (a PHP-ból)
+
+v2.0 Tervek:
+----
+- Fájlküldés
+- Rich Text szövegdoboz használata a nevek, személyes üzenetek megjelenitéséhez
+http://stackoverflow.com/questions/6168177/how-to-insert-image-in-a-textbox
+http://www.codeproject.com/Articles/4544/Insert-Plain-Text-and-Images-into-RichTextBox-at-R
+- ItemWordWrap csak nagy listanézetben
+- Frissitõ/frissitésjelzõ
+- Beállítások: Név, üzenet frissítése
+- Névjegy

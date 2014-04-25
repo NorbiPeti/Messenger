@@ -1,0 +1,25 @@
+v9.0 - 2014.04.11., 12., 13., 15., 17., 18.
+----
+- Most már a bejelentkezés is frissíti az állapotot (elfelejtettem az elõzõ verzióba belerakni)
+- Bezáráskor kijelentkezés
+- Tálcaikon elkészítve
+- Értesítõrendszer elkezdve
+- Elmenti az ablak állását (teljes képernyõs, kis méretû vagy normál)
+
+Hibajavítások:
+- A helyes chatablakot hozza be minden esetben (rossz ID-t használt)
+- Az ismerõslistában a nevekre ismét kattintva a beszélgetõablak elõtérbe kerül
+- A partnerkiválasztással kapcsolatos átszervezések (UserInfo, ChatForm) - Most már minden alkalommal frissít minden nevet mindenhol... --> Több ismerõs kiválasztása nem ajánlott
+- (Áthelyeztem az egyedi control-okat a gépemen, és az ezzel okozott Designer hibát több óráig próbáltam javítani)
+- Kilépés javítva (ha nincs bejelentkezve, nem próbál meg kijelentkezni bezáráskor)
+
+Less Closed Beta v1.0 Tervek:
+----
+- Fájlküldés
+- Rich Text szövegdoboz használata a nevek, személyes üzenetek megjelenitéséhez
+http://stackoverflow.com/questions/6168177/how-to-insert-image-in-a-textbox
+http://www.codeproject.com/Articles/4544/Insert-Plain-Text-and-Images-into-RichTextBox-at-R
+- ItemWordWrap csak nagy listanézetben
+- Frissitõ/frissitésjelzõ
+- Beállítások: Név, üzenet frissítése
+- Névjegy

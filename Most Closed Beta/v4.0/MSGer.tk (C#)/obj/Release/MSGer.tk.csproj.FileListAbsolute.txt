@@ -1,9 +1,0 @@
-D:\Z - Norbi cucca\0 Projektek\MSGer.tk\MSGer.tk\bin\Release\MSGer.tk.exe.config
-D:\Z - Norbi cucca\0 Projektek\MSGer.tk\MSGer.tk\bin\Release\MSGer.tk.exe
-D:\Z - Norbi cucca\0 Projektek\MSGer.tk\MSGer.tk\bin\Release\MSGer.tk.pdb
-D:\Z - Norbi cucca\0 Projektek\MSGer.tk\MSGer.tk\obj\Release\MSGer.tk.MainForm.resources
-D:\Z - Norbi cucca\0 Projektek\MSGer.tk\MSGer.tk\obj\Release\MSGer.tk.LoginForm.resources
-D:\Z - Norbi cucca\0 Projektek\MSGer.tk\MSGer.tk\obj\Release\MSGer.tk.Properties.Resources.resources
-D:\Z - Norbi cucca\0 Projektek\MSGer.tk\MSGer.tk\obj\Release\MSGer.tk.csproj.GenerateResource.Cache
-D:\Z - Norbi cucca\0 Projektek\MSGer.tk\MSGer.tk\obj\Release\MSGer.tk.exe
-D:\Z - Norbi cucca\0 Projektek\MSGer.tk\MSGer.tk\obj\Release\MSGer.tk.pdb

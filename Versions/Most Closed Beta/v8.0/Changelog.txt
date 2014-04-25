@@ -1,0 +1,37 @@
+v8.0 - 2014.04.02., 04., 05., 10., 11.
+----
+
+InvitePartner:
+- "Elfogadott kódok elrejtése" opció hozzáadva
+
+LoginForm:
+- Elküldi a felhasználó nevét is az azonositójával együtt bejelentkezéskor
+
+ChatForm:
+- Üzenetküldés kész
+- Minden új üzenetnél letekeri az üzenethez
+
+MainForm:
+- A kijelentkezés most már ténylegesen frissíti a felhasználó állapotát
+
+Hibajavitások:
+- Ha olyan helyen kattintasz duplán, ahol nincs ismerõsöd a listában, most már nem reagál rá (eddig felmutatott egy sima chatablakot)
+- Valamiért a UserCode generálása közben kisbetûssé alakitottam eddig a jelszót, és most a hoszttal együtt a jelszavamat is változtattam itt, ezért találtam rá
+- Nem tárol külön tömböt a kódoknak az ismerõs meghivása ablaknál
+- Csak visszaigazolásra váró kódot lehet törölni, hogy véletlenül ne törlõdjön (technikai okok miatt is)
+- A kódgenerálást beleraktam egy do-while szerkezetbe, hogy leellenõrizze, hogy használva van-e már a generált kód
+- A Main Thread-et a MainForm nevezi el
+- A bejelentkezõablakot minden bejelentkezéskor törli, majd kijelentkezéskor újra létrehozza; ezért áthelyeztem némi kódot
+- A kódmásolás az egész szöveget másolta, most már csak a kódot
+- A PHP nem minden esetben irt ki minden információt, ezért a program hibát jelzett, ha elfogadottnak jelöltem az ismerettséget
+- Hibát jelzett, ha bezártam a chatablakot, javitva (ChatWindows.Count!=0)
+
+v9.0 Tervek:
+----
+- Fájlküldés
+- Rich Text szövegdoboz használata a nevek, személyes üzenetek megjelenitéséhez
+http://stackoverflow.com/questions/6168177/how-to-insert-image-in-a-textbox
+http://www.codeproject.com/Articles/4544/Insert-Plain-Text-and-Images-into-RichTextBox-at-R
+- ItemWordWrap csak nagy listanézetben
+- Frissitõ/frissitésjelzõ
+- Beállítások: Név, üzenet frissítése

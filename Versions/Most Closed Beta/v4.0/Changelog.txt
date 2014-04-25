@@ -1,0 +1,17 @@
+v4.0 - 2014.02.22., 25., 28.
+----
+- Külsõ áttervezve - új listanézet
+- Megjegyzésbe tett kódok törölve
+- Partnerkiválasztás fájlküldéshez, üzenetküldéshez, egyéb mûveletekhez
+- MainForm és LoginForm fájljai átnevezve a form nevének megfelelõen (elõtte: Form1 és Form2)
+- A partnerlista használja a létrehozott partnerImages képlistát - Hasznos lesz a partnerek képeinek megjelenitéséhez
+- Hibás jelszó után nem lehetett bejelentkezni, javitva
+
+v5.0 Tervek:
+----
+- Thread a lista frissitéséhez
+- Jobb klikk listák
+- Fájlküldés, üzenetküldés (fájlküldés: fájlválasztás, majd üzenetküldés)
+- Rich Text szövegdoboz használata a nevek, személyes üzenetek megjelenitéséhez
+http://stackoverflow.com/questions/6168177/how-to-insert-image-in-a-textbox
+http://www.codeproject.com/Articles/4544/Insert-Plain-Text-and-Images-into-RichTextBox-at-R

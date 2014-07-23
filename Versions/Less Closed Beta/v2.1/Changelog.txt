@@ -1,0 +1,15 @@
+v2.1 - 2014.07.23.
+----
+- A program elsõ indulása közben bekövetkezõ hiba javítva
+- A program most már nem indul alapértelmezetten kis méretben
+- Angol fordítás (még ellenõrzésre szorul)
+-- Néhány szöveg hozzáadva a nyelvi fájlokhoz
+- Nyelvválasztó elkészítve
+
+v3.0 Tervek:
+----
+- TransparencyKey használata a kerekített sarkokhoz; külön megjelenítési mód, ha teljes képernyõs, és ha nem
+- Hangulatjelek animálása
+- Egy gomb a hangulatjelek írásközbeni megjelenítésére; vagy egy checkbox; vagy inkább tán egy külön doboz, amibe írja
+- Fájlküldést megoldani
+- Üzenetek titkosítása visszafejthetõen

@@ -70,7 +70,7 @@
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(382, 20);
             this.textBox1.TabIndex = 2;
-            this.textBox1.Text = "http://msger.tk/download.php?version=latest";
+            this.textBox1.Text = "http://msger.url.ph/download.php?version=latest";
             // 
             // listBox1
             // 

@@ -1,0 +1,104 @@
+v3.0 (System update) - 2014.08.01., 08.07-08., 08.16-19., 08.28-30., 09.01., 09.04-06., 09.08-09., 09.15., 09.19., 09.22., 09.26., 09.29., 10.02., 10.09., 10.12., 10.18., 10.23-24.
+----
+- Magasfokú optimalizáció
+- Automatikus kijelentkeztetés, ha megszakad a kapcsolat (PHP) <-- Már nincs is rá szükség
+- A képfeltöltés elkezdve
+- Opció a hangulatjelek megjelenítésére
+- Mostantól csak egyetlen példányt enged futni, kivéve ha a "multi" paraméter meg van adva
+- Rendszer teljes átszervezése
+-- Nincs központi szerver <-- Pontosabban a terhelése csökkentve
+-- A rendszer nyelvét használja alapértelmezetten, nem a magyart
+-- A tárolási rendszert talán egy-két nap alatt megoldottam (titkosítás, stb.) - De még nem használta mindenhol azt a rendszert
+-- Az üzeneteket is mostantól ugyanaz a thread frissíti, mint a partnerlistát elsõsorban az UDP mûködése miatt
+-- Ha üzenetet írnak, most már automatikusan megjelenik az ablak
+-- A profilképeket mindenképpen elküldi mindenkinek, nem lehet beállítani
+-- Partnerinformáció (MainForm, AddPartner, stb.)
+-- RichListView: Az elemek kiválaszthatóak, ha üres területre kattintasz, megszünteti a kiválasztást
+-- Metódus a szövegek lefordítására, így jobban végezhetõ a hibakeresés (Language.GetCurrentLanguage().Strings átírva 145 helyen Language.Translate-re)
+-- Mostantól az összes ismert információt tárolja, amit a felhasználókról kap
+-- UserID használata ListID helyett ahol lehet
+-- Ideiglenesen kitilt minden IP-t, ahonnan nem érkezett válasz
+-- Most már kiírja azt is, ha nem elérhetõ egy ismerõs (eddig a listában nem jelzett semmit akkor)
+-- A rejtve kapcsolódásnál még ugyanaz a kliens is azt hiszi, hogy nem elérhetõ
+-- BeforeLogin form hozzáadva, mostantól jelzi, hogy mit csinál bejelentkezés elõtt, ha lassú lenne (leginkább a frissítésellenõrzés)
+--- 1 mp-ig nem jelenik meg
+-- A beérkezõ üzenetekkel csak akkor foglalkozik, ha van a beszélgetésben legalább egy ismerõs (a küldõ ismerõs vagy legalább egy ismerõsnek is küldte)
+
+PHP:
+- Jelszótitkosítás fejlesztve, ezért pedig új jelszó kérése, ezért pedig kötelezõ E-mailt megadni
+
+Kisebb-nagyobb hibajavítások
+- Hiba több, mint 2 ismerõsnél javítva
+- Az üzenetküldésnek valami komoly gondja van... - Amit megoldottam az átszervezéssel
+- Nincs profilkép szöveg lefordítva
+- Az ideigelenesen eltárolt partnerképekbe eddig a NoChange szöveget írta, javítva
+- Mikor elkezdi a program betöltését, a contactList-be a "Betöltés..." szöveget írta - Javitva "Loading..."-ra
+- Kétszer is elküldte az ismerõs hozzáadása üzenetet a szervernek, javítva
+- A keresõsávban most már nem csak a magyar nyelvû "Ismerõsök keresése..." szöveget veszi figyelembe
+- "Hiba történt az állapot beállítása során." szöveg lefordítva
+- Az ismerõslistában zárójelben lévõ állapotjelzés lefordítva
+- A tálcaikon most már nem marad ott, ha helyesen áll le a program
+- TaskbarNotifier láthatóbbá téve
+- RichListView: Mivel a RichTextBox nem reagál a MouseClick eseményre, a MouseUp eseményt használtam a listanézetemben (késõbb lehet, hogy különválasztom, de egyelõre jó így)
+- Notifier javítva
+- Néhány NullReferenceException kezelés helyettesítve if not null ellenõrzésekkel
+- Ha az aktuális nyelv változik, a program csak azután indít el egy újabb példányt, hogy elmentette a beállításokat
+- Most már nem lehet átírni a felhasználónevet/jelszót bejelentkezés közben
+- A Language osztály is hasonló a TextFormathoz: egy new Language(); paranccsal betölti az egészet
+-- Mindkettõnél az egyes példányokat létrehozó konstruktorok priváttá téve
+- PartnerListThreadActive változó törölve, LThread!=null ellenõrzések
+- Most már eltûnteti a nyitott chatablakokat kijelentkezéskor
+- SelectPartnerSender változó törölve - Paraméterként adtam meg
+- Most már nem ugrik mindig egy görgetõsáv jobb szélére az ismerõslista átméretezés után
+-- A görgetõsáv néha megjelenik kikapcsolva, ha kisebbre állítjuk a program méretét
+- RichListView: Most már nem frissül állandóan az elõzõ elemek listája (ami az elemek helyes törléséhez kell), csak ha ténylegesen változik
+- Most már csak akkor jelenik meg az ikon a tálcán, ha bejelentkezett, így nem marad ott, ha a bejelentkezõablak bezárul bejelentkezés nélkül
+- Most már akkor is elmenti a legutóbb használt E-mail pozicióját, ha eddig nem volt eltárolva
+- Most már az összes hangulatjelet felismeri az adott szövegben, és nem dolgozik feleslegesen
+
+Protokoll (sokszor én is összekevertem, ezért is írom ide):
+!response (kérelem/válasz) - 1 byte
+!UpdateType (frissítés típusa) - 1 byte
+keyversion
+UserID (felh. azonosító) - 4 byte
+data (adatok) - változó
+
+A felkiáltójeleseket nem adja tovább a ReceiveUpdates funkció - Vagy mégis most már
+
+v4.0 (Design update) Tervek:
+----
+- TransparencyKey használata a kerekített sarkokhoz; külön megjelenítési mód, ha teljes képernyõs, és ha nem
+- Fájlküldést megoldani
+- Képfeltöltés
+- Átdizájnolás (témarendszer; #00FF00 átlátszó (akár legyen állítható))
+-- A több emberes beszélgetéseket megoldani
+-- Valahogy trükkösen csinálni dizájnert a paneleknek (pl. új UserControl, átírva panelre, vagy ilyesmi)
+- TaskbarNotifier
+- ItemWordWrap csak nagy listanézetben
+- Aero bevonása - http://www.codeproject.com/Articles/17681/Windows-Vista-Aero-Glass-in-NET-Managed-Win-Appl
+-- (TransparencyKey: black - Átméretezés után nem lehet a címsorra sem kattintani)
+- Mono változat (épp az Aero-s kinézet miatt kellene külön dizájn a Mono változathoz
+- FormClosed eseménynél CloseReason-t kezelni
+- Kód dokumentálása (valamennyire)
+- Kézírás bevonása
+
+v5.0 (Packer update) Tervek:
+----
+- Hangulatjelcsomagok - Csomagrendszer (hangulatjelek, hangok, kinézetek, stb.)
+-- Age of Mythology hangpakk
+- Ha nincs engedélye(tûzfal) vagy HTTP proxy mögött áll a felhasználó: HTTP (HttpListener, HttpWebRequest, HttpWebResponse)
+- Hangulatjelek animálása
+- Pluginrendszer - http://www.c-sharpcorner.com/UploadFile/samhaidar/LateBindingWithReflection09122005053810AM/LateBindingWithReflection.aspx
+- Az IP címeket talán hozzárendelni a UserID-khoz, és leellenõrizni, hogy jó UserID-t küld-e
+- Jelszókezelés frissítése: "Jelszógeneráló program"-om által készített jelszavak elfogadása
+- Titkosítás fejlesztése (LoginUser frissítése és SetKey)
+-- http://en.wikipedia.org/wiki/Man-in-the-middle_attack
+- A hálózati részt befejezni, javítani (pl. chat)
+-- Üzenetküldés akkor is, ha nincs más online
+-- "Szóval ezt mondták rólam"-rendszer
+- Egy felhasználó csak egyszer jelentkezhessen be (egy gépre, vagy akár az egész rendszerben is)
+- Beállítások gyarapítása
+
+v6.0 Tervek:
+----
+- Steam integráció(?) https://github.com/Overv/SteamWebAPI - Igen valószínûtlen

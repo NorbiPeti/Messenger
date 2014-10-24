@@ -30,18 +30,8 @@ namespace MSGer.tk
             t.SetApartmentState(System.Threading.ApartmentState.STA);
             t.IsBackground = true;
             t.Start();
-            /*var ti = new Timer();
-            ti.Interval = 1000;
-            ti.Tick += ti_Tick;
-            ti.Start();*/
         }
 
-        /*static void ti_Tick(object sender, EventArgs e)
-        {
-            ((Timer)sender).Stop();
-            if (mInstance != null)
-                mInstance.Show();
-        }*/
         public static void Destroy()
         {
             done = true;
@@ -67,7 +57,6 @@ namespace MSGer.tk
 
         private void BeforeLogin_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //if (e.CloseReason == CloseReason.UserClosing)
             if (!done)
                 Program.Exit(false);
         }

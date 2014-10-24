@@ -33,20 +33,17 @@ namespace MSGer.tk
             {
                 string[] lines = File.ReadAllLines(files[x]);
                 var dict = lines.Select(l => l.Split('=')).ToDictionary(a => a[0], a => a[1]);
-                //(new Language(files[x].Split('\\')[files[x].Split('\\').Length - 1].Split('.')[0])).Strings = dict; //Eltárol egy új nyelvet, majd a szövegeket hozzátársítja
                 new Language(new FileInfo(files[x]).Name.Split('.')[0]).Strings = dict; //(FileInfo: 2014.09.01.) - Eltárol egy új nyelvet, majd a szövegeket hozzátársítja
             }
 
-            if (Language.FromString(Storage.Settings["lang"]) == null)
+            /*if (Language.FromString(Storage.Settings["lang"]) == null)
             {
                 MessageBox.Show("Error: Could not find language: " + Storage.Settings["lang"]);
                 return;
-            }
+            }*/
             CurrentUser.Language = Language.FromString(Storage.Settings["lang"]);
             if (CurrentUser.Language == null)
             {
-                //MessageBox.Show("Error: The specified language is not found.\nTo quickly solve this, copy the preffered language file in languages folder to the same place with the name of \"" + Storage.Settings["lang"] + "\"\nYou can then change the language in your preferences later.");
-                //return;
                 if (Language.UsedLangs.ContainsKey("en"))
                 {
                     MessageBox.Show("Error: The specified language (" + Storage.Settings["lang"] + ") is not found.\nThe program will use english that you can change later.");
@@ -66,13 +63,6 @@ namespace MSGer.tk
         public static Language FromString(string value)
         {
             Language tmp = null;
-            /*try
-            {
-                tmp = UsedLangs[value];
-            }
-            catch
-            {
-            }*/
             UsedLangs.TryGetValue(value, out tmp);
             return tmp;
         }

@@ -22,7 +22,6 @@ namespace MSGer.tk
     {
         public static MainForm MainF;
         public static string ProcessName = Process.GetCurrentProcess().ProcessName;
-        //public static BeforeLogin BeforeLForm;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -31,21 +30,17 @@ namespace MSGer.tk
         {
             Process[] pname = Process.GetProcessesByName(ProcessName);
             if (pname.Length > 1 && !(args.Length > 0 && args[0] == "multi"))
-                //Program.Exit(false);
                 Environment.Exit(0); //2014.09.26. - Felesleges bármi más műveletet végrehajtani, még nem is töltött be semmit
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             BeforeLogin.Create();
-            //BeforeLForm.Show();
             Console.WriteLine("Starting MSGer.tk...");
             AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             try
             {
                 MainF = new MainForm();
-                //Console.WriteLine("Test: " + MainF.Test(MainF.Text));
-                //Console.WriteLine("Test: " + MainF.Test(MainF));
                 Application.Run(MainF);
             }
             catch (FileNotFoundException e)
@@ -53,17 +48,12 @@ namespace MSGer.tk
                 MessageBox.Show("Egy fájl nem található.\nA fájl neve:\n" + e.FileName + "\nEnnél a műveletnél: " + e.TargetSite);
 
             }
-            /*catch(Exception e)
-            {
-                ErrorHandling.FormError(MainF, e);
-            }*/
         }
 
         public static readonly bool ShowFirstChangeExceptions = false;
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             if (MessageBox.Show("An unhandled error occured\n" + ((Exception)e.ExceptionObject).Message + "\nHere: " + ((Exception)e.ExceptionObject).TargetSite + ((e.IsTerminating) ? "\nThe program will exit(?)." : "") + "\n\nExit?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                //Environment.Exit(0);
                 Program.Exit(CurrentUser.UserID != 0); //2014.09.26. - Ha be van jelentkezve, elmenti a beállításokat - Csak mert így tán a legegyszerűbb
         }
 
@@ -108,7 +98,6 @@ namespace MSGer.tk
                         Storage.Settings["windowstate"] = "2";
                     else if (MainF.WindowState == FormWindowState.Normal)
                         Storage.Settings["windowstate"] = "3";
-                    //Settings.Default.Save();
                     Storage.Save(true); //2014.08.07.
                 }
             }
@@ -122,9 +111,6 @@ namespace MSGer.tk
         public static void Exit(bool savesettings)
         { //2014.04.12.
             BeforeExit(savesettings);
-            //CurrentUser.UserID = 0; - Felesleges, néha megáll itt, és úgy hajt végre egy bejelentkezést igénylő lekérést
-            //Application.Exit();
-            //Application.ExitThread();
             Environment.Exit(0); //Hatásosabb
             MessageBox.Show("Hiba: Nem sikerült leállítani a programot.");
         }

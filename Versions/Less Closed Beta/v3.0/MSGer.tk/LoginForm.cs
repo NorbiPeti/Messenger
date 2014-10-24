@@ -27,8 +27,6 @@ namespace MSGer.tk
             if (Storage.Settings["email"].Length != 0)
                 tmp = Storage.Settings["email"].Split(',').ToList<string>();
             else tmp = new List<string>();
-            //textBox1.Text = tmp[0];
-            //textBox1.Text = tmp[tmp.Count - 1]; //2014.07.08.
             tmp.Add("");
             textBox1.Text = tmp[Int32.Parse(Storage.Settings["lastusedemail"])]; //2014.07.08.
             textBox1.AutoCompleteCustomSource.AddRange(tmp.ToArray());
@@ -117,10 +115,7 @@ namespace MSGer.tk
             button1.Enabled = false;
             Request.Abort();
             if (stoplogint) //2014.09.01.
-                //{
                 LThread.Abort(); //2014.09.01.
-            //Networking.ReceiverConnection.Client.Shutdown(System.Net.Sockets.SocketShutdown.Receive); //2014.09.19.
-            //}
             button1.Text = Language.Translate("login");
             button1.Enabled = true;
             linkLabel1.Enabled = true;
@@ -193,7 +188,6 @@ namespace MSGer.tk
                 }
             }
 
-            //Bejelentkezés folyamatban...
             HttpWebResponse response;
             try
             {
@@ -248,12 +242,7 @@ namespace MSGer.tk
                 }
                 //else - 2014.10.02. - Egyszer észrevettem a Google Code összehasonlítójával, hogy ez nem kéne ide
                 Storage.Settings["lastusedemail"] = Storage.Settings["email"].Split(',').ToList<string>().IndexOf(UserText).ToString();
-                //Settings.Default.Save();
-                //Bejelentkezés
                 string[] respstr = responseString.Split('ͦ');
-                //CurrentUser.UserID = Convert.ToInt32(respstr[0]); //Régebben ezt találtam, most meg az Int32.Parse-t... (2014.04.02.)
-                //CurrentUser.Name = respstr[1]; //2014.04.04.
-                //respstr[1]: 
 
                 if (respstr[3].Contains("Fail"))
                 {
@@ -263,27 +252,18 @@ namespace MSGer.tk
                 }
                 string[] entries = respstr[3].Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
                 IEnumerable<IPEndPoint> ips = entries.Select(entry => ((entry != ":") ? new IPEndPoint(IPAddress.Parse(entry.Split(':')[0]), Int32.Parse(entry.Split(':')[1])) : new IPEndPoint(IPAddress.Loopback, 0)));
-                //UserInfo.IPs.AddRange(ips); //2014.08.29.
-                /*foreach(var entry in ips) //2014.08.30.
-                {
-                    UserInfo.IPs.Add(entry);
-                }*/
                 UserInfo.IPs = new HashSet<IPEndPoint>(ips); //2014.08.30.
-                //Storage.Settings["myip"] = respstr[2]; //2014.08.29. - A CurrentUser.IPs-en keresztül is lehet rá hivatkozni
                 CurrentUser.IP = IPAddress.Parse(respstr[2]); //2014.10.24. - Most már csak ott lehet rá hivatkozni, felesleges eltárolni
-                //CurrentUser.State = 1; //2014.08.31. 0:42 -- MainForm
                 //2014.09.19. - Bejelentkezés elküldése áthelyezve a MainForm-ba
 
                 CurrentUser.UserID = Int32.Parse(respstr[0]); //2014.09.01. - Áthelyeztem, hogy addig ne higgye bejelentkezettnek, amíg el nem küldi a többieknek
 
                 Storage.SaltKey = CalculateMD5Hash(PassText); //2014.08.07.
-                //Storage.FileName = CurrentUser.UserID.ToString() + ".db"; //2014.08.07.
                 Storage.FileName = respstr[0] + ".db"; //2014.09.01. - Felesleges számmá alakítani, majd vissza
 
                 CurrentUser.UserName = UserText; //2014.09.01. - Ha semmit nem tud saját magáról, és más sem, de nem ismerőse saját magának, akkor az itt beállított felhasználónév érvényesül
                 CurrentUser.Name = UserText; //2014.09.01.
                 string ReceivedPass = respstr[4]; //2014.10.24. 1:39
-                //LoginForm.UserCode = CalculateMD5Hash(CalculateMD5Hash(PassText) + " Some text because why not " + CurrentUser.UserID).ToLower();
                 LoginForm.UserCode = CalculateMD5Hash(ReceivedPass + " Some text because why not " + CurrentUser.UserID).ToLower();
 
                 Closeable = true;

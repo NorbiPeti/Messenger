@@ -10,12 +10,6 @@ namespace MSGer.tk
 {
     public static class CurrentUser
     {
-        /*
-         * 2014.03.05.
-         * Információátrendezés: Property-k használata; Minden felhasználóhoz egy-egy User class
-         * Ez a class használható lenne az aktuális felhsaználó információinak tárolására
-         */
-        //public static int UserID = 0;
         public static int UserID
         {
             get
@@ -31,8 +25,6 @@ namespace MSGer.tk
                 Storage.LoggedInSettings["currentuser_userid"] = value.ToString();
             }
         }
-        //public static int[] PartnerIDs = new int[1024];
-        //public static string Name = "";
         public static string Name
         {
             get
@@ -52,8 +44,6 @@ namespace MSGer.tk
                 SendUpdate();
             }
         }
-        //public static Language Language = Language.English; //2014.04.19.
-        //public static Language Language;
         public static Language Language
         {
             get
@@ -65,7 +55,6 @@ namespace MSGer.tk
                 Storage.Settings["lang"] = value.ToString();
             }
         }
-        //public static string Message = "";
         public static string Message
         {
             get
@@ -85,7 +74,6 @@ namespace MSGer.tk
                 SendUpdate();
             }
         }
-        //public static string State = "";
         public static int State
         {
             get
@@ -105,7 +93,6 @@ namespace MSGer.tk
                 SendUpdate();
             }
         }
-        //public static string UserName = "";
         public static string UserName
         {
             get
@@ -125,7 +112,6 @@ namespace MSGer.tk
                 SendUpdate();
             }
         }
-        //public static string Email = "";
         public static string Email
         {
             get
@@ -145,55 +131,7 @@ namespace MSGer.tk
                 SendUpdate();
             }
         }
-        //private static IPAddress[] ips = new IPAddress[2];
-        /*public static IPAddress[] IPs //2014.08.29.
-        {
-            get
-            {
-                if (!Storage.Settings.ContainsKey("myip"))
-                    Storage.LoggedInSettings.Add("myip", "127.0.0.1");
-                string[] strs = Storage.LoggedInSettings["myip"].Split(';');
-                *var ips = new IPAddress[strs.Length];
-                for (int i = 0; i < ips.Length; i++)
-                {
-                    ips[i] = IPAddress.Parse(strs[i]);
-                }*
-                IPAddress[] ips = strs.Select(entry => IPAddress.Parse(entry)).ToArray();
-                return ips;
-            }
-            set
-            {
-                if (!Storage.Settings.ContainsKey("myip"))
-                    Storage.Settings.Add("myip", "");
-                string[] strs = value.Select(entry => entry.ToString()).ToArray();
-                Storage.Settings["myip"] = String.Join(";", strs);
-            }
-        }*/
-        //public static IPAddress[] IPs { get; set; }
-        //private static List<IPAddress> ips = new List<IPAddress>();
-        /*public static List<IPAddress> IPs
-        {
-            get
-            {
-                return ips;
-            }
-            set
-            {
-                ips = value;
-            }
-        }*/
         public static IPAddress IP;
-        /*public static IPAddress IP
-        {
-            get
-            {
-                return IPAddress.Parse(Storage.Settings["myip"]);
-            }
-            set
-            {
-                Storage.Settings["myip"] = value.ToString();
-            }
-        }*/
         public static string[] Keys
         { //2014.09.08-09.
             get
@@ -209,7 +147,6 @@ namespace MSGer.tk
                 if (!Storage.LoggedInSettings.ContainsKey("currentuser_keys"))
                     Storage.LoggedInSettings.Add("currentuser_keys", "");
                 string x = "";
-                //Storage.LoggedInSettings["currentuser_keys"] = value.Select(new Func<string, string>(delegate { var x = ""; foreach (var item in value) { x += item + ";"; } return x; }));
                 foreach (var item in value)
                 {
                     x += item;
@@ -234,12 +171,6 @@ namespace MSGer.tk
             }
         }
         public static bool SendChanges = false;
-        ///// <summary>
-        ///// Átmásolja-e a memóriába az egész fájlt a küldés előtt.
-        ///// Nagy méretű fájloknál nem ajánlott, különben igen a fájl esetleges elérhetetlensége miatt.
-        ///// 2014.06.15.
-        ///// </summary>
-        //public static bool CopyToMemoryOnFileSend = true; - Automatikusan érzékelje (2014.08.18.)
 
         public static void SendUpdate()
         { //2014.08.30.
@@ -263,10 +194,8 @@ namespace MSGer.tk
                 bool fine = false;
                 if (resp == null || resp.Length == 0)
                     break;
-                //foreach (var item in resp) //Ha sehonnan nem kapott választ (egy perc után), újrapróbálkozik
                 foreach (var item in resp) //Ha sehonnan nem kapott választ (egy perc után), újrapróbálkozik
                 {
-                    //if (item[4] == 0x01) //Az első 4 byte a UserID
                     if (Networking.ParsePacket(item).Data[0] == 0x01) //2014.09.19.
                         fine = true;
                 }

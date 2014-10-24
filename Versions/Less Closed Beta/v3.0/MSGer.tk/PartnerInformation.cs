@@ -13,7 +13,6 @@ namespace MSGer.tk
 {
     public partial class PartnerInformation : Form
     {
-        //public PartnerInformation(string shownname, int status, string message, string username, int userid, string email)
         public PartnerInformation(UserInfo uinfo)
         {
             InitializeComponent();
@@ -28,7 +27,6 @@ namespace MSGer.tk
             else
                 pictureBox1.ImageLocation = "noimage.png";
             nameTextBox.Text = uinfo.Name;
-            //statusLabel.Text = uinfo.State.ToString();
             if (uinfo.State == 1)
                 statusLabel.Text = Language.Translate("menu_file_status_online");
             else if (uinfo.State == 2)

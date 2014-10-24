@@ -25,8 +25,6 @@ namespace MSGer.tk
     {
         public static List<ChatForm> ChatWindows = new List<ChatForm>();
         public List<int> ChatPartners = new List<int>();
-        //public List<string> PendingMessages = new List<string>();
-        //public Thread UpdateT;
         public ChatForm()
         {
             InitializeComponent();
@@ -74,9 +72,6 @@ namespace MSGer.tk
                             break;
                         }
                 }
-                //UpdateT = new Thread(new ThreadStart(UpdateMessages));
-                //UpdateT.Name = "Message Update Thread (" + partnerName.Text + ")";
-                //UpdateT.Start();
             }
         }
 
@@ -90,16 +85,6 @@ namespace MSGer.tk
             if (e.KeyCode != Keys.Enter || e.Shift || messageTextBox.Text.Length == 0)
                 return;
             messageTextBox.ReadOnly = true;
-            /*
-             * 2014.03.08. 0:03
-             * A fenti kódra válaszul a másik felhasználó esetleges új válaszát is irja be; tehát frissitse az üzeneteket
-             * Az üzenetellenőrző thread folyamatosan fusson, amint végrehajtotta a parancsokat, kezdje újra (nincs Thread.Sleep)
-             * 
-             * 2014.03.19.
-             * Csinálja úgy, mint a képeknél, hogy a legutóbbi üzenetlekérés dátumához igazodjon, és csak a legújabb üzeneteket
-             * töltse le
-             */
-            //PendingMessages.Add(messageTextBox.Text);
             if (!Networking.SendChatMessage(this, messageTextBox.Text))
                 MessageBox.Show(Language.Translate("networking_alone"));
             messageTextBox.Focus();
@@ -123,29 +108,6 @@ namespace MSGer.tk
         {
             Process.Start(e.LinkText);
         }
-        //public void UpdateMessages()
-        //{
-        /*
-         * 2014.03.21.
-         * updatemessages: küldje el, hogy mikor kapott utoljára üzenetet ÉS az új üzeneteket,
-         * a szerver pedig először válaszoljon a szerinte aktuális időponttal,
-         * majd küldje el az annál újabb üzeneteket
-         * getrecentmessages: ezt csak önmagában küldje,
-         * a szerver pedig válaszoljon a legutóbbi x üzenettel,
-         * ahol x egy beállitható szám (alapból 10)
-         * ----
-         * Az új üzeneteket egy listában tárolja, majd amikor továbbitja őket, törölje a listából fokozatosan
-         * (ahogy összeállitja a karakterláncot, mindig törölje azt az üzenetet a listából
-         * 
-         * 2014.08.08.
-         * Az UpdateListAndChat thread kezelje ezt is,
-         * az updatemessages packet-et csak akkor küldje el, ha új üzenet érkezik,
-         * a régebbi üzeneteket (getrecentmessages) tárolja el lokálisan, mint minden egyéb adatát
-         */
-        //while (ChatWindows.Count != 0 && !this.IsDisposed && MainForm.MainThread.IsAlive)
-        //{
-        //}
-        //}
 
         private void ChatForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -163,7 +125,6 @@ namespace MSGer.tk
             return (i != ChatWindows.Count) ? ChatWindows[i] : null; //== --> !=: 2014.09.22.
         }
 
-        //public static string TMessage;
         public string TMessage;
         public int SetThreadValues()
         {
@@ -183,7 +144,6 @@ namespace MSGer.tk
             Stream st = new FileStream(openFileDialog1.FileName, FileMode.Open);
             try
             {
-                //if (CurrentUser.CopyToMemoryOnFileSend)
                 if (new FileInfo(openFileDialog1.FileName).Length > Int64.Parse(Storage.Settings["filelen"]))
                 {
                     List<byte> buf = new List<byte>();

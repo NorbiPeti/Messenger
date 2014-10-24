@@ -12,7 +12,6 @@ using System.IO;
 using GlacialComponents.Controls;
 using Khendys.Controls;
 using System.Threading;
-using CustomUIControls;
 using System.Reflection;
 using SzNPProjects;
 using System.Net.Sockets;
@@ -26,17 +25,12 @@ namespace MSGer.tk
         public static LoginForm LoginDialog;
         public static Thread LThread;
         public static Thread MainThread = null;
-        //public static bool PartnerListThreadActive = true;
-        //public static ToolStripMenuItem SelectPartnerSender = null;
         public static Notifier taskbarNotifier;
         public MainForm()
         {
             BeforeLogin.SetText("Starting...");
             InitializeComponent();
-            //beforeloginform.Validate();
             Thread.CurrentThread.Name = "Main Thread";
-            //contactList.Items.Add(new RichListViewItem()); - 2014.08.28. - Kommentálva, mivel most már itt,
-            //contactList.Items[0].SubItems[0].Text = "Loading..."; - 2014.08.28. - a konstruktorban tölti be, ami nem látszódik a felhasználó számára
             toolStripMenuItem4.Enabled = false; //2014.04.12.
             toolStripMenuItem8.Enabled = false; //2014.04.12.
 
@@ -49,7 +43,6 @@ namespace MSGer.tk
             //2014.09.04. - Amint lehet állítsa be a helyes IP-t, majd azt hagyja úgy, akármi történjék
             while (true)
             {
-                //remoteEP = new IPEndPoint(IPAddress.Any, Int32.Parse(Storage.Settings["port"]));
                 if (IPGlobalProperties.GetIPGlobalProperties().GetActiveUdpListeners().Select(entry => entry.Port).Contains(Int32.Parse(Storage.Settings["port"])))
                     Storage.Settings["port"] = (Int32.Parse(Storage.Settings["port"]) + 1).ToString();
                 else
@@ -59,10 +52,7 @@ namespace MSGer.tk
             Networking.SenderConnection.AllowNatTraversal(true); //2014.09.04.
 
             BeforeLogin.SetText("Loading languages...");
-            //#region Nyelvi beállitások
             new Language();
-            //MessageBox.Show("Nyelv: " + CurrentUser.Language.ToString());
-            //#endregion
 
             BeforeLogin.SetText(Language.Translate("beforelogin_translatemainf"));
             #region Helyi beállitás
@@ -149,22 +139,16 @@ namespace MSGer.tk
 
             BeforeLogin.SetText(Language.Translate("beforelogin_checkforupdates"));
             //2014.04.25.
-            //string response = Networking.SendRequest("checkforupdates",
-            /*byte[] response = Networking.SendUpdate(Networking.UpdateType.CheckForUpdates,
-                BitConverter.GetBytes(Int32.Parse(Assembly.GetExecutingAssembly().GetName().Version.ToString().Replace(".", ""))),
-                false);*/
             string response = Networking.SendRequest("checkforupdates",
                 Assembly.GetExecutingAssembly().GetName().Version.ToString().Replace(".", ""),
                 0, false);
             if (response == "outofdate")
-            //if(response[0]==0x00)
             {
                 var res = MessageBox.Show(Language.Translate("outofdate"), Language.Translate("outofdate_caption"), MessageBoxButtons.YesNo);
                 if (res == DialogResult.Yes)
                     System.Diagnostics.Process.Start("http://msger.url.ph/download.php?version=latest");
             }
             else if (response != "fine")
-                //else if (response[0]!=0x01)
                 MessageBox.Show(Language.Translate("error") + ": " + response);
 
             //2014.09.06.
@@ -196,7 +180,6 @@ namespace MSGer.tk
             // Create the thread object, passing in the Alpha.Beta method
             // via a ThreadStart delegate. This does not start the thread.
             LThread = new Thread(new ThreadStart(new UpdateListAndChat().Run));
-            //LThread.Name = "Update Partner List";
             LThread.Name = "Update Partnerlist and Chat";
 
             Thread keepupthread = new Thread(new ThreadStart(Networking.KeepUpThread));
@@ -207,25 +190,6 @@ namespace MSGer.tk
 
             Storage.Load(true); //2014.08.07.
 
-            //Temp - 2014.09.15.
-            /*Random rand = new Random();
-            Random rand2 = new Random();
-            string[] keys = new string[CurrentUser.Keys.Length];
-            for (int i = 0; i < CurrentUser.Keys.Length; i++)
-            {
-                string str = "";
-                for (int j = 0; j < 8; j++)
-                {
-                    if (rand2.Next(0, 1) == 0)
-                        str += (char)rand.Next('a', 'z');
-                    else
-                        str += (char)rand.Next('A', 'Z' + 1);
-                }
-                //CurrentUser.Keys[i] = str;
-                keys[i] = str;
-            }
-            CurrentUser.Keys = keys;*/
-
             if (Storage.Settings["windowstate"] == "1") //2014.04.18. - 2014.08.08.
                 this.WindowState = FormWindowState.Maximized;
             else if (Storage.Settings["windowstate"] == "2")
@@ -233,12 +197,7 @@ namespace MSGer.tk
             else if (Storage.Settings["windowstate"] == "3")
                 this.WindowState = FormWindowState.Normal;
 
-            /*#region Partnerlista betöltése
-            #endregion*/
-            //LoadPartnerList();
-
             taskbarNotifier = new Notifier("popup-bg.bmp", Color.FromArgb(255, 0, 255), "close.bmp", 5000);
-            //taskbarNotifier.Show("Teszt cím", "Teszt tartalom\nMásodik sor");
 
             taskbarNotifier.Click += PopupClick;
             taskbarNotifier.CloseClick += PopupCloseClick;
@@ -254,7 +213,6 @@ namespace MSGer.tk
             keepupuserst.Start();
 
             //2014.08.19. - Küldje el a bejelentkezés hírét, hogy frissítéseket kapjon
-            //byte[] strb = Encoding.Unicode.GetBytes(Storage.Settings["myip"]);
             byte[] strb = Encoding.Unicode.GetBytes(CurrentUser.IP.ToString());
             byte[] tmpfinal = new byte[8 * UserInfo.KnownUsers.Count + strb.Length + 4]; //Hosszúság, IP, ismert felh. ID, frissítési idő
             Array.Copy(BitConverter.GetBytes(strb.Length), tmpfinal, 4);
@@ -262,8 +220,6 @@ namespace MSGer.tk
             //if (tmpfinal.Length != 0)
             if (UserInfo.KnownUsers.Count != 0)
             {
-                //byte[] tmptmp = BitConverter.GetBytes(CurrentUser.UserID); //Felesleges, eleve elküldi a UserID-t
-                //Array.Copy(tmptmp, tmpfinal, 4);
                 for (int i = 0; i < UserInfo.KnownUsers.Count; i++)
                 {
                     byte[] tmptmp = BitConverter.GetBytes(UserInfo.KnownUsers[i].UserID);
@@ -311,34 +267,8 @@ namespace MSGer.tk
             UserInfo.AutoUpdate = true;
             foreach (var entry in UserInfo.KnownUsers)
             {
-                //if (entry.IsPartner)
-                //{
-                /*var pictb = new PictureBox();
-                string imgpath = entry.GetImage();
-                if (imgpath != "noimage.png" || File.Exists("noimage.png")) //2014.03.13.
-                    pictb.ImageLocation = imgpath;
-                else
-                    MessageBox.Show(Language.Translate("noimage_notfound"), "Hiba");
-                pictb.SizeMode = PictureBoxSizeMode.Zoom; //Megváltoztatva ScretchImage-ről
-                var listtext = new ExRichTextBox();
-                string state = "";
-                if (entry.State == 1)
-                    state = " (" + Language.Translate("menu_file_status_online") + ")";
-                else if (entry.State == 2)
-                    state = " (" + Language.Translate("menu_file_status_busy") + ")";
-                else if (entry.State == 3)
-                    state = " (" + Language.Translate("menu_file_status_away") + ")";
-                listtext.Text = entry.Name + state + "\n" + entry.Message;
-                listtext = TextFormat.Parse(listtext);
-                contactList.Items.Add(new RichListViewItem(new Control[] { pictb, listtext }));
-                entry.ListID = contactList.Items.Count - 1;*/
-                //contactList.Items.Add(new RichListViewItem(2));
                 entry.Update(); //Áthelyeztem, mert az értékek frissítésekor is szükség van rá
-                //}
             }
-            //UserInfo.AddCurrentUser(); //2014.09.01. - Feleslegesen csináltam meg
-            /*while (contactList.Items.Count > UserInfo.KnownUsers.Count)
-                contactList.Items.RemoveAt(UserInfo.KnownUsers.Count - 1);*/
             contactList.AutoUpdate = true;
             contactList.Enabled = true;
             contactList.Refresh();
@@ -361,30 +291,13 @@ namespace MSGer.tk
             toolStripMenuItem8.Enabled = false; //2014.04.12.
             Storage.Save(true); //2014.08.28.
             SetOnlineState(null, null); //2014.04.11. - Erre nincs beállitva, ezért automatikusan 0-ra, azaz kijelentkeztetettre állítja az állapotát
-            //CurrentUser.UserID = 0; - SetOnlineState-ben is benne van
             contactList.Items.Clear(); //2014.09.19.
             UserInfo.KnownUsers.Clear(); //2014.09.19.
-            /*CurrentUser.SendChanges = false; //2014.09.19. - A UserID=0-t még küldje el, de a többit ne - Pontosabban a UserID-t már a SetOnlineState is elküldi
-            CurrentUser.Email = ""; //2014.09.19.
-            CurrentUser.IP = null; //2014.09.19.
-            CurrentUser.KeyIndex = 0; //2014.09.19.
-            CurrentUser.Keys = null; //2014.09.19.
-            CurrentUser.Language = null; //2014.09.19.
-            CurrentUser.Message = ""; //2014.09.19.
-            CurrentUser.Name = ""; //2014.09.19.
-            CurrentUser.State = 0; //2014.09.19.*/
             Storage.Dispose();
-            /*Networking.ReceiverConnection.Close();
-            Networking.ReceiverConnection = null;
-            Networking.SenderConnection.Close();
-            Networking.SenderConnection = null;*/
-            //PartnerListThreadActive = false;
             LThread = null;
             CurrentUser.SendChanges = false; //2014.08.30.
-            //foreach(var item in ChatForm.ChatWindows)
             while (ChatForm.ChatWindows.Count > 0)
             { //2014.09.06. - A Close() hatására törli a gyűjteményből, ezért sorra végig fog haladni rajta
-                //item.Close();
                 ChatForm.ChatWindows[0].Close();
             }
             LoginDialog = new LoginForm(); //2014.04.04.
@@ -395,15 +308,10 @@ namespace MSGer.tk
             Storage.Load(true); //2014.08.07.
             toolStripMenuItem4.Enabled = true; //2014.04.12.
             toolStripMenuItem8.Enabled = true; //2014.04.12.
-            //contactList.Items.Clear(); //2014.03.05.
-            //contactList.Enabled = false; //2014.03.05.
-            //contactList.Items.Add(new RichListViewItem());
-            //contactList.Items[0].SubItems[0].Text = "Betöltés...";
             CurrentUser.SendChanges = true; //2014.08.30.
             contactList.Items.Clear(); //2014.10.09. - Kijelentkezéskor hozzáad egy üres listelemet egy (Nem elérhető) felirattal, ezt tünteti el
             LoadPartnerList();
             this.Show();
-            //PartnerListThreadActive = true; //2014.02.28. - Törli, majd újra létrehozza a listafrissitő thread-et, ha újra bejelentkezett
             // Create the thread object, passing in the Alpha.Beta method
             // via a ThreadStart delegate. This does not start the thread.
             LThread = new Thread(new ThreadStart(new UpdateListAndChat().Run));
@@ -416,7 +324,6 @@ namespace MSGer.tk
         private void LoginNewUser(object sender, EventArgs e)
         {
             Storage.Save(true); //2014.09.19.
-            //System.Diagnostics.Process.Start("MSGer.tk.exe");
             Process.Start(((Program.ProcessName.Contains("vshost")) ? Program.ProcessName.Replace(".vshost", "") : Program.ProcessName) + ".exe", "multi");
         }
 
@@ -429,12 +336,9 @@ namespace MSGer.tk
                 state = 2;
             if (sender == nincsAGépnélToolStripMenuItem)
                 state = 3;
-            //if (sender == rejtveKapcsolódikToolStripMenuItem) //Ha rejtve van, hagyja 0-n a state változót, azaz küldje el azt, hogy nincs bejelentkezve
-            //state = 4;
             if (sender == null) //2014.08.30. - Erre nagyon sokáig nem volt felkészítve, és ezt kihasználtam a kijelentkezéshez
             {
                 Networking.SendRequest("setstate", 0 + "", 0, true); //Kijelentkezés
-                //byte[] tmpb = Encoding.Unicode.GetBytes(Storage.Settings["myip"]);
                 byte[] tmpb = Encoding.Unicode.GetBytes(CurrentUser.IP.ToString());
                 byte[] sendb = new byte[4 + tmpb.Length];
                 Array.Copy(BitConverter.GetBytes(tmpb.Length), sendb, 4);
@@ -442,31 +346,11 @@ namespace MSGer.tk
                 Networking.SendUpdate(Networking.UpdateType.LogoutUser, sendb, false);
             }
             CurrentUser.State = state; //2014.08.28.
-            //HTTP
-            //if (!Networking.SendUpdate(Networking.UpdateType.SetState, BitConverter.GetBytes(state), false)[0].Contains((byte)0x01))
-            //var ret = Networking.SendUpdate(Networking.UpdateType.SetState, BitConverter.GetBytes(state), false); - 2014.09.09. - A CurrentUser.State-nél már elküldi
-            //if (ret == null || !ret[0].Contains((byte)0x01))
-            /*if (ret == null || ret.Length == 0)
-                return;
-            bool ok = false;
-            for (int i = 0; i < ret.Length; i++)
-            {
-                if(ret[i][4]==0x01) //Az első 4 byte a UserID
-                {
-                    ok = true;
-                    break;
-                }
-            }
-            if (!ok)
-                MessageBox.Show(Language.Translate("setstate_error"));*/
         }
 
         private void SelectPartner(object sender, EventArgs e)
         {
-            //SelectPartnerSender = (ToolStripMenuItem)sender;
-            //DialogResult dr = new DialogResult();
             var form = new SelectPartnerForm((ToolStripMenuItem)sender);
-            //dr = form.ShowDialog();
             DialogResult dr = form.ShowDialog();
             if (dr == DialogResult.OK)
             {
@@ -486,7 +370,6 @@ namespace MSGer.tk
                                 tmp = -1;
                             if (UserInfo.KnownUsers[j].UserName == partners[i] || UserInfo.KnownUsers[j].Email == partners[i] || UserInfo.KnownUsers[j].UserID == tmp)
                             { //Egyezik a név, E-mail vagy ID - UserName: 2014.04.17.
-                                //tmpchat.ChatPartners.Add(j); //A Partners-beli indexét adja meg
                                 tmpchat.ChatPartners.Add(UserInfo.KnownUsers[j].UserID); //2014.08.28.
                             }
                         }
@@ -495,13 +378,11 @@ namespace MSGer.tk
                 if (tmpchat.ChatPartners.Count != 0)
                 {
                     ChatForm.ChatWindows.Add(tmpchat);
-                    //if (SelectPartnerSender == fájlKüldéseToolStripMenuItem)
                     if (sender == fájlKüldéseToolStripMenuItem)
                     {
                         tmpchat.Show();
                         tmpchat.OpenSendFile(form);
                     }
-                    //if (SelectPartnerSender == azonnaliÜzenetKüldéseToolStripMenuItem)
                     if (sender == azonnaliÜzenetKüldéseToolStripMenuItem)
                     {
                         tmpchat.Show();
@@ -509,11 +390,9 @@ namespace MSGer.tk
                 }
             }
         }
-        //public delegate int MyDelegate();
 
         private void ClearSearchBar(object sender, EventArgs e)
         {
-            //if (textBox1.Text == "Ismerősök keresése...")
             if (textBox1.Text == Language.Translate("searchbar"))
                 textBox1.Clear();
         }
@@ -521,57 +400,14 @@ namespace MSGer.tk
         private void PutTextInSearchBar(object sender, EventArgs e)
         {
             if (textBox1.Text == "")
-                //textBox1.Text = "Ismerősök keresése...";
                 textBox1.Text = Language.Translate("searchbar");
         }
         public static int RightClickedPartner = -1;
-        /*private void ContactItemRightClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button != MouseButtons.Right || contactList.HotItemIndex>=contactList.Items.Count)
-            { //Igy nem reagál arra sem, ha üres területre kattintunk
-                return;
-            }
-            contactList.Items[contactList.HotItemIndex].Selected = true;
-            RightClickedPartner = contactList.HotItemIndex;
-            partnerMenu.Show(Cursor.Position);
-        }*/
-        /*private void OpenSendMessage(object sender, EventArgs e) //2014.03.02. 0:17
-        {
-            int tmp = contactList.HotItemIndex;
-            if (RightClickedPartner == -1)
-                RightClickedPartner = tmp;
-            if (RightClickedPartner == -1 || RightClickedPartner >= contactList.Items.Count)
-                return;
-            //Üzenetküldő form
-            int ChatNum = -1;
-            for (int i = 0; i < ChatForm.ChatWindows.Count; i++)
-            {
-                if (ChatForm.ChatWindows[i].ChatPartners.Count==1 && ChatForm.ChatWindows[i].ChatPartners.Contains(RightClickedPartner))
-                { //Vele, és csak vele beszél
-                    ChatNum = i;
-                    break;
-                }
-            }
-            if(ChatNum==-1)
-            { //Nincs még chatablaka
-                ChatForm.ChatWindows.Add(new ChatForm());
-                ChatForm.ChatWindows[ChatForm.ChatWindows.Count - 1].ChatPartners.Add(RightClickedPartner);
-                ChatForm.ChatWindows[ChatForm.ChatWindows.Count - 1].Show();
-            }
-            else
-            {
-                ChatForm.ChatWindows[ChatNum].Show();
-                ChatForm.ChatWindows[ChatNum].Focus();
-            }
-
-            RightClickedPartner = -1;
-        }*/
 
         public static void OpenSendMessage(int uid)
         {
             //Üzenetküldő form
             int ChatNum = -1;
-            //int uid = UserInfo.GetUserIDFromListID(e);
             for (int i = 0; i < ChatForm.ChatWindows.Count; i++)
             {
                 if (ChatForm.ChatWindows[i].ChatPartners.Count == 1 && ChatForm.ChatWindows[i].ChatPartners.Contains(uid))
@@ -664,12 +500,6 @@ namespace MSGer.tk
         {
             if (RightClickedPartner == -1)
                 return;
-            /*string shownname = "";
-            int status = 0;
-            string message = "";
-            string username = "";
-            int userid = 0;
-            string email = "";*/
             for (int i = 0; i < UserInfo.KnownUsers.Count; i++)
             {
                 if (UserInfo.KnownUsers[i].ListID != RightClickedPartner)
@@ -677,7 +507,6 @@ namespace MSGer.tk
                 (new PartnerInformation(UserInfo.KnownUsers[i])).ShowDialog();
                 break;
             }
-            //(new PartnerInformation(shownname, status, message, username, userid, email)).ShowDialog();
         }
 
         private void contactList_ItemRightClicked(object sender, int e)

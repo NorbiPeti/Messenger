@@ -31,8 +31,6 @@ namespace MSGer.tk
             CloseButton.Left = CloseButton.Right - size.Width; //2014.08.29.
             CloseButton.Width = size.Width; //2014.08.29.
             CloseButton.Height = size.Height; //2014.08.29.
-            //this.Show();
-            //this.Hide();
             NotifierTimer = new Timer();
             NotifierTimer.Interval = waittime;
             NotifierTimer.Tick += NotifierTimer_Tick;
@@ -50,8 +48,6 @@ namespace MSGer.tk
             this.BackgroundImage = background;
             this.TransparencyKey = TransparentColor;
             CloseButton.Image = closebutton;
-            //this.Show();
-            //this.Hide();
         }
         public void Show(string title, string content) //(kép) - 2014.04.15.
         {

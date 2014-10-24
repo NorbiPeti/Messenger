@@ -159,9 +159,6 @@
     <Compile Include="SelectPartnerForm.Designer.cs">
       <DependentUpon>SelectPartnerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="TaskbarNotifier.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="UserInfo.cs" />
     <EmbeddedResource Include="AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>

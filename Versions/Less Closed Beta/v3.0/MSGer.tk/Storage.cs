@@ -29,28 +29,13 @@ namespace MSGer.tk
                 if (!loggedin)
                 {
                     Settings.Add("email", "");
-                    //Settings.Add("picupdatetime", ""); <-- Store picture directly in database
                     Settings.Add("windowstate", "3");
                     Settings.Add("lang", CultureInfo.InstalledUICulture.TwoLetterISOLanguageName);
                     Settings.Add("port", "4510"); //Use this to connect to different users <-- És fogalmam sincs, miért angolul írtam...
-                    //Settings.Add("receiveport", "4511"); //Connect to this port to perform updates <-- Mellesleg használjak UDP-t...
                     Settings.Add("lastusedemail", "0");
-                    //Settings.Add("userinfo", "");
-                    //Settings.Add("ips", ""); //Az összes ismert IP, ami benne van a rendszerben - x.x.x.x:x;x.x.x.x:x
                     Settings.Add("filelen", "-1"); //(long) Maximum fájlméret, ameddig bemásolhatja a memóriába
-                    //Settings.Add("myip", ""); //2014.08.29.
                     Settings.Add("isserver", "");
                 }
-                /*else - Ha nincs még létrehozva, majd létrehozza a property-nél, itt nincs rá szükség
-                {
-                    LoggedInSettings.Add("currentuser_name", CurrentUser.Name);
-                    LoggedInSettings.Add("currentuser_username", CurrentUser.UserName);
-                    LoggedInSettings.Add("currentuser_userid", CurrentUser.UserID.ToString());
-                    LoggedInSettings.Add("currentuser_message", CurrentUser.Message);
-                    LoggedInSettings.Add("currentuser_email", CurrentUser.Email);
-                    LoggedInSettings.Add("currentuser_state", CurrentUser.State);
-                    LoggedInSettings.Add("currentuser_language", CurrentUser.Language.ToString());
-                }*/
             }
             else
             {
@@ -111,7 +96,6 @@ namespace MSGer.tk
             var tmp = splitCache.ToDictionary(
                                    entry => "userinfo_" + entry.Substring(0, entry.IndexOf("=")),
                                    entry => entry.Substring(entry.IndexOf("=") + 1));
-            //LoggedInSettings = (Dictionary<string, string>)LoggedInSettings.Concat(tmp);
             LoggedInSettings = LoggedInSettings.Concat(tmp)
                          .ToLookup(pair => pair.Key, pair => pair.Value)
                          .ToDictionary(group => group.Key, group => group.Last());

@@ -58,37 +58,15 @@ namespace MSGer.tk
                     break;
                 }
             }
-            //string result = Networking.SendRequest("updatesettings", nameText.Text + "ͦ" + messageText.Text, 0, true);
-            //if (result != "Success")
-            //MessageBox.Show(Language.Translate("error"] + ": " + result);
-            //List<byte> bytes = new List<byte>();
-            //bytes.AddRange(Encoding.Unicode.GetBytes(CurrentUser.UserID + "ͦ" + nameText.Text + "ͦ" + messageText.Text));
-            //byte[][] result = Networking.SendUpdate(Networking.UpdateType.UpdateSettings, bytes.ToArray(), false);
             CurrentUser.Name = nameText.Text;
             CurrentUser.Message = messageText.Text;
-            /*List<byte> bytes = new List<byte>();
-            bytes.AddRange(BitConverter.GetBytes(CurrentUser.UserID));
-            bytes.AddRange(BitConverter.GetBytes(CurrentUser.Name.Length));
-            bytes.AddRange(Encoding.Unicode.GetBytes(CurrentUser.Name));
-            bytes.AddRange(BitConverter.GetBytes(CurrentUser.Name.Length));
-            bytes.AddRange(Encoding.Unicode.GetBytes(CurrentUser.Message));
-            byte[][] result = Networking.SendUpdate(Networking.UpdateType.ListUpdate, bytes.ToArray(), false);
-            if (result==null || !result[0].All(b => b == 0x00)) //Ha nincs online felhasználó, akkor is továbbhalad
-            {*/ //Azért nem kell ez az egész fentebbi rész, mert minden egyes változást elküld mindenkinek
             if (Storage.Settings["lang"] != lang)
             {
                 Storage.Settings["lang"] = lang;
-                //Settings.Default.Save();
                 MessageBox.Show(Language.Translate("restart_needed"));
-                //System.Diagnostics.Process.Start("msger.tk.exe");
-                //Environment.Exit(0);
-                //Program.Exit();
                 Program.Restart(true);
             }
             this.Close();
-            /*}
-            else //Ha az összes ismert címről hibajelentés érkezik, jelezze a hibát
-                MessageBox.Show(Language.Translate("error"));*/
         }
 
         private void cancelbtn_Click(object sender, EventArgs e)

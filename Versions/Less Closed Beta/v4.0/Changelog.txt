@@ -1,0 +1,49 @@
+v4.0 (Design Update) - 2014.10.28., 10.31., 11.07-08., 11.15., 11.21-23., 11.29-30., 12.05., 12.12-14., 12.18-22., 12.24., 12.30-31., 2015.01.07-08., 01.12., 01.31., 02.05., 02.26., 03.15., 03.26.
+----
+Újdonságok:
+- ChatPanel-ek, beállítástól függõen az összes chatablak lehet a fõ ablakban
+-- Ehhez többek közt FlowLayoutPanel-ek használata
+-- Bal klikk átvált arra az ablakra, középsõ klikk bezárja
+- Kézírás opció elkészítve
+- Állapotsáv
+- Ismerõsök keresése szövegdoboz mûködõképessé téve
+-- Hangulatjeleket is felismeri annak ellenére, hogy kép formájában látszanak, mivel a nevüknél az eredeti szöveggel tárolja el
+- Automatikus frissítés (a Subversion integrálva a programba)
+- Jobb klikk menü a ChatIcon-oknak
+- Új rendszer, amiben az ablakok keretét lehet szerkeszteni anékül, hogy platformfüggõ hívásokra lenne szükség (ThemedForms)
+-- Az ablak áthelyezhetõ, átméretezhetõ, bezárható, kis méret, stb. gombok is mûködnek
+- Nyelvváltás megoldva újraindítás nélkül
+- Témakezelõ rendszer
+
+Hibajavítások:
+- A Hangulatjelek megjelenítése opció most már rendesen alkalmazkodik az átméretezéshez
+- Most már az egész keresõsáv kattintható és a megfelelõ kurzor látszódik
+- A ChatPartners lista UserInfo-ból áll int helyett (UserInfo.Select() helyett x.UserID - Kevesebb ciklus)
+- Most már kihagyja a PicUpdateTime-ot a UserInfo.GetImage()
+- A Storage.Settings["ips"] eltávolítva minden kódból - Felesleges eltárolni, amikor minden alkalommal változhat
+- Most már lehet hivatkozni a MainForm példányára akkor is, ha még nem végzett a létrehozásával
+- Language.GetCuurentLanguage javítva Language.GetCurrentLanguage-re
+- A ChatPanel-ekben automatikusan az üzenetküldõ szövegdobozra helyezi a fókuszt
+- A SettingsForm-ban a Mégse gomb alkalmazkodik az átméretezéshez
+
+Fejlesztések:
+- Hálózati rendszer feljesztve
+-- Érzékeli, ha ugyanazon hálózatról többen csatlakoznak (közös publikus IP), ekkor csak egy felhasználó kapja meg az internetrõl az adatokat, a többieknek õ küldi el
+-- Hole punching
+-- Titkosítás akkor is mûködik, ha kevés adatról van szó
+-- A Main Thread által végzett adatküldés lényegét is egy másik thread végzi, hogy ne akadjon meg a program mûködése
+- Szerver mód beállítható a beállításokban
+- Storage.Settings["chatwindow"] --> Storage.LoggedInSettings["chatwindow"] - Felhasználótól függõ beállítás, nem géptõl
+- A beszélgetõablakoknak jelzi a címében, kivel beszélünk, vagy a beszélgetés nevét
+- A hosszú forrásfájlok szétosztva
+
+v4.1 Tervek:
+----
+- Kézírás elküldése
+- Témaválasztás, témakezelés (A v5.0-ban pedig majd csak a mentés/betöltés...)
+- GlacialList-eket lecserélni a saját RichListView-emre
+- Hálózati rendszer javítása/fejlesztése (IPv6)
+
+v5.0 Tervek:
+----
+- MCT (CAB) fájlkezelés (?)

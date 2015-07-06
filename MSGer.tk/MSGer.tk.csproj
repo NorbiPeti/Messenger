@@ -336,7 +336,6 @@
     <Compile Include="Forms\LoginForm.LoginUser.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Networking\Networking.SendUpdate.cs" />
     <Compile Include="Networking\Networking.Threads.cs" />
     <Compile Include="Networking\Networking.PacketFormat.cs" />
     <None Include="packages.config" />

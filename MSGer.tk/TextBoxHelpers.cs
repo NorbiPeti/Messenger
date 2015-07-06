@@ -1,5 +1,5 @@
 ﻿using FastColoredTextBoxNS;
-using System;
+using System; //Copyright (c) NorbiPeti 2015 - See LICENSE file
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;

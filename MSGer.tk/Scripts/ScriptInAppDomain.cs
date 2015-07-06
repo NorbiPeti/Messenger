@@ -1,5 +1,5 @@
 ﻿using Microsoft.CSharp;
-using System;
+using System; //Copyright (c) NorbiPeti 2015 - See LICENSE file
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;

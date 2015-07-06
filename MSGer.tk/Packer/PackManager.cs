@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System; //Copyright (c) NorbiPeti 2015 - See LICENSE file
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,9 +20,8 @@ namespace MSGer.tk
                 if (!typeof(IPackable).IsAssignableFrom(type) || type.IsInterface)
                     continue;
                 if (!Directory.Exists(GetName(type)))
-                    //continue;
                     Directory.CreateDirectory(GetName(type)); //2015.05.16.
-                string[] files = Directory.GetFiles(GetName(type));
+                string[] files = Directory.GetFiles(GetName(type)).Where(entry => Path.GetFileNameWithoutExtension(entry).Length > 0).ToArray(); //Where: 2015.07.06.
                 if (files.Length == 0)
                     DownloadDefaults(type); //2015.06.14.
                 foreach (string file in files)

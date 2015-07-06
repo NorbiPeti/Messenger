@@ -1,6 +1,6 @@
 ﻿//#define LOCAL_SERVER
 
-using System;
+using System; //Copyright (c) NorbiPeti 2015 - See LICENSE file
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;

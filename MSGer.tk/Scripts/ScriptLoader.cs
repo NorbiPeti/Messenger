@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System; //Copyright (c) NorbiPeti 2015 - See LICENSE file
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +15,9 @@ namespace MSGer.tk
         public ScriptLoader(string path)
         {
             Path = path;
+        }
+        private ScriptLoader() //2015.07.06.
+        {
         }
         private AppDomain PluginAppDomain;
         private ScriptInAppDomain script
@@ -37,9 +40,11 @@ namespace MSGer.tk
             PluginAppDomain = AppDomain.CreateDomain(System.IO.Path.GetFileName(Path), null, pluginAppDomainSetup);
             script = new ScriptInAppDomain(Path, PluginAppDomain);
             PluginAppDomain.DoCallBack(script.LoadInAppDomain);
+            bool success = script.Success; //2015.07.06.
             if (!script.Success)
                 AppDomain.Unload(PluginAppDomain); //2015.04.06.
-            return script.Success;
+            //return script.Success;
+            return success; //2015.07.06.
         }
         public void Unload()
         {
@@ -64,6 +69,7 @@ namespace MSGer.tk
 
         public bool LoadFromPack(string filename)
         {
+            this.Path = filename; //2015.07.06.
             if (!this.Load())
             {
                 MessageBox.Show(Language.Translate(Language.StringID.ScriptError));

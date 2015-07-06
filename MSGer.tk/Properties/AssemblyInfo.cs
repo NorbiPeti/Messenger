@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MSGer.tk")]
-[assembly: AssemblyCopyright("GNU GPLv3")]
+[assembly: AssemblyCopyright("Copyright (c) NorbiPeti 2015 - See LICENSE file")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

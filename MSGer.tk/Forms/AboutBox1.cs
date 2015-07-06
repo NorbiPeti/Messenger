@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System; //Copyright (c) NorbiPeti 2015 - See LICENSE file
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -19,7 +19,8 @@ namespace MSGer.tk
             this.labelVersion.Text = String.Format(Language.Translate(Language.StringID.About_Version), AssemblyVersion);
             this.labelCopyright.Text = AssemblyCopyright;
 
-            labelLicenseLink.Text = "https://www.gnu.org/copyleft/gpl.html"; //2014.04.18. - Frissitve: 2014.04.25.
+            //labelLicenseLink.Text = "https://www.gnu.org/copyleft/gpl.html"; //2014.04.18. - Frissitve: 2014.04.25.
+            labelLicenseLink.Text = "LICENSE"; //2015.07.06.
             List<string> desc = new List<string>(); //2014.04.18.
             desc.Add(Language.Translate(Language.StringID.About_Programmer)); //2014.04.18.
             desc.Add("SzNP");

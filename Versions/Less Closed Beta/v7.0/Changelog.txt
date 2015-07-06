@@ -1,4 +1,4 @@
-v7.0 - 2015.07.05.
+v7.0 - 2015.07.05-06.
 ----
 - A hangulatjelek ablaka bevonva a témarendszerbe
 

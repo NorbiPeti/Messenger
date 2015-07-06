@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 namespace MSGer.tk.Properties {
-    using System;
+    using System; //Copyright (c) NorbiPeti 2015 - See LICENSE file
     
     
     /// <summary>

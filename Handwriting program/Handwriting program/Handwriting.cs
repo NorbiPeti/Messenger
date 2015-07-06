@@ -81,12 +81,17 @@ namespace Handwriting_program
         private Bitmap bmp;
         private bool drawing = false;
         private Thread MainT;
+        private object lockobj = new object(); //2015.06.06. 0:07
         private void Handwriting_MouseDown(object sender, MouseEventArgs e)
         {
             /*timer.Interval = 100;
             timer.Tick += timer_Tick;
             timer.Start();*/
-            drawing = true;
+            lock (lockobj)
+            {
+                drawing = true;
+                Monitor.Pulse(lockobj); //2015.06.06.
+            }
         }
 
         //void timer_Tick(object sender, EventArgs e)
@@ -94,55 +99,60 @@ namespace Handwriting_program
         {
             while (MainT.IsAlive)
             {
-                if (!drawing)
+                lock (lockobj)
                 {
-                    prevp = new Point();
-                    continue;
-                }
-                //GC.Collect();
-                /*var bm = new Bitmap(pictureBox1.Image);
-                Point p = pictureBox1.PointToClient(Cursor.Position);*/
-                Point p = new Point();
-                //this.Invoke(new Action(() => p = this.PointToClient(Cursor.Position)));
-                this.Invoke(new Action(() => p = panel1.PointToClient(Cursor.Position))); //2014.11.08.
-                //Graphics gr = this.CreateGraphics();
-                //this.Invoke(new Action(() => gr = this.CreateGraphics()));
-                this.Invoke(new Action(() => gr = panel1.CreateGraphics())); //2014.11.08.
-                /*if (bmp != null)
-                {
-                    bmp.Dispose();
-                    bmp = null;
-                }
-                bmp = new Bitmap(this.Width, this.Height);*/
-                this.Invoke(new Action(() => bmpgr = Graphics.FromImage(bmp)));
-                var tmppen = (Pen)pen.Clone();
-                if (Erase)
-                    tmppen.Color = Color.White; //2014.11.08.
-                gr.DrawLine(tmppen, p, ((prevp.X != 0 && prevp.Y != 0) ? prevp : p));
-                //if (Erase)
+                    //if (!drawing) //TODO: Optimalizálás, és a thread leállítása, ha már nincs rá szükség
+                    while (!drawing) //while: 2015.06.06.
+                    {
+                        Monitor.Wait(lockobj); //2015.06.06.
+                        prevp = new Point();
+                        //continue;
+                    }
+                    //GC.Collect();
+                    /*var bm = new Bitmap(pictureBox1.Image);
+                    Point p = pictureBox1.PointToClient(Cursor.Position);*/
+                    Point p = new Point();
+                    //this.Invoke(new Action(() => p = this.PointToClient(Cursor.Position)));
+                    this.Invoke(new Action(() => p = panel1.PointToClient(Cursor.Position))); //2014.11.08.
+                    //Graphics gr = this.CreateGraphics();
+                    //this.Invoke(new Action(() => gr = this.CreateGraphics()));
+                    this.Invoke(new Action(() => gr = panel1.CreateGraphics())); //2014.11.08.
+                    /*if (bmp != null)
+                    {
+                        bmp.Dispose();
+                        bmp = null;
+                    }
+                    bmp = new Bitmap(this.Width, this.Height);*/
+                    this.Invoke(new Action(() => bmpgr = Graphics.FromImage(bmp)));
+                    var tmppen = (Pen)pen.Clone();
+                    if (Erase)
+                        tmppen.Color = Color.White; //2014.11.08.
+                    gr.DrawLine(tmppen, p, ((prevp.X != 0 && prevp.Y != 0) ? prevp : p));
+                    //if (Erase)
                     //tmppen.Color = Color.Transparent; //2014.11.08.
                     //tmppen.Color = Color.Empty; //2014.12.05.
-                bmpgr.DrawLine(tmppen, p, ((prevp.X != 0 && prevp.Y != 0) ? prevp : p));
-                if (Erase)
-                    bmp.MakeTransparent(Color.White); //2014.12.05.
-                prevp = p;
-                //Bitmap tmpbmp = new Bitmap(this.Width, this.Height);
-                //Bitmap tmpbmp = new Bitmap(panel1.Width, panel1.Height, PixelFormat.Format64bppArgb); //2014.11.08. - 2014.12.05. - PixelFormat
-                Bitmap tmpbmp = new Bitmap(panel1.Width, panel1.Height);
-                using (Graphics g = Graphics.FromImage(tmpbmp))
-                    //g.DrawImage(bmp, 0, 0, this.Width, this.Height);
-                    g.DrawImage(bmp, 0, 0, panel1.Width, panel1.Height); //2014.11.08.
-                bmp.Dispose();
-                bmp = tmpbmp;
-
-                /*if (bmp != null)
-                {
+                    bmpgr.DrawLine(tmppen, p, ((prevp.X != 0 && prevp.Y != 0) ? prevp : p));
+                    if (Erase)
+                        bmp.MakeTransparent(Color.White); //2014.12.05.
+                    prevp = p;
+                    //Bitmap tmpbmp = new Bitmap(this.Width, this.Height);
+                    //Bitmap tmpbmp = new Bitmap(panel1.Width, panel1.Height, PixelFormat.Format64bppArgb); //2014.11.08. - 2014.12.05. - PixelFormat
+                    Bitmap tmpbmp = new Bitmap(panel1.Width, panel1.Height);
+                    using (Graphics g = Graphics.FromImage(tmpbmp))
+                        //g.DrawImage(bmp, 0, 0, this.Width, this.Height);
+                        g.DrawImage(bmp, 0, 0, panel1.Width, panel1.Height); //2014.11.08.
                     bmp.Dispose();
-                    bmp = null;
+                    bmp = tmpbmp;
+
+                    /*if (bmp != null)
+                    {
+                        bmp.Dispose();
+                        bmp = null;
+                    }
+                    bmp = new Bitmap(this.Width, this.Height);
+                    this.Invoke(new Action(() => this.DrawToBitmap(bmp, new Rectangle(new Point(), this.Size))));*/
+                    GC.Collect();
                 }
-                bmp = new Bitmap(this.Width, this.Height);
-                this.Invoke(new Action(() => this.DrawToBitmap(bmp, new Rectangle(new Point(), this.Size))));*/
-                GC.Collect();
             }
             /*if (p.X < 0 || p.X >= bm.Width || p.Y < 0 || p.Y >= bm.Height)
                 return;
@@ -234,7 +244,7 @@ namespace Handwriting_program
             catch (ArgumentException)
             {
             }*/
-            //Refresh();
+        //Refresh();
         //}
 
         /*void resizeT_Tick(object sender, EventArgs e)
@@ -262,7 +272,8 @@ namespace Handwriting_program
         {
             /*var bmp = new Bitmap(this.Width, this.Height);
             this.DrawToBitmap(bmp, new Rectangle(new Point(), this.Size));*/
-            return bmp;
+            //return bmp;
+            return (Bitmap)bmp.Clone(); //2015.07.05. 0:30
         }
 
         private void Handwriting_Paint(object sender, PaintEventArgs e)

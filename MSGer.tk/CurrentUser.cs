@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -15,7 +17,7 @@ namespace MSGer.tk
             get
             {
                 if (!Storage.LoggedInSettings.ContainsKey("currentuser_userid"))
-                    Storage.LoggedInSettings.Add("currentuser_userid", "0");
+                    return 0; //2015.06.25. - Nincs bejelentkezve
                 return Int32.Parse(Storage.LoggedInSettings["currentuser_userid"]);
             }
             set
@@ -48,11 +50,11 @@ namespace MSGer.tk
         {
             get
             {
-                return Language.FromString(Storage.Settings["lang"]);
+                return Language.CurrentLanguage; //2015.05.16.
             }
             set
             {
-                Storage.Settings["lang"] = value.ToString();
+                Language.CurrentLanguage = value; //2015.05.16.
             }
         }
         public static string Message
@@ -131,7 +133,6 @@ namespace MSGer.tk
                 SendUpdate();
             }
         }
-        //public static IPAddress IP;
         public static List<IPAddress> IPs;
         public static string[] Keys
         { //2014.09.08-09.
@@ -171,7 +172,7 @@ namespace MSGer.tk
                 Storage.LoggedInSettings["currentuser_keys"] = value.ToString();
             }
         }
-        public static int PicUpdateTime
+        public static double PicUpdateTime //2015.06.06. - int-->double
         {
             get
             {
@@ -186,42 +187,65 @@ namespace MSGer.tk
                 Storage.LoggedInSettings["currentuser_picupdatetime"] = value.ToString();
             }
         }
+
+        public static int Port; //2015.05.24.
+
         public static bool SendChanges = false;
 
         public static void SendUpdate()
         { //2014.08.30.
-            /*
-             * CurrentUser.SendUpdate()
-             * Bármi változás történik, elküldi mindenkinek
-             */
             if (!SendChanges)
                 return;
-            string retstr = "";
-            retstr += UserID + "_name=" + Name + "\n";
-            retstr += UserID + "_message=" + Message + "\n";
-            retstr += UserID + "_state=" + State + "\n";
-            retstr += UserID + "_username=" + UserName + "\n";
-            retstr += UserID + "_email=" + Email + "\n";
-            retstr += UserID + "_ispartner=" + false + "\n"; //Ellenőrizze le, amikor megkapja
-            retstr += UserID + "_lastupdate=" + Program.DateTimeToUnixTime(DateTime.Now);
-            retstr += UserID + "_picupdatetime=" + PicUpdateTime;
-            //while (true)
-            //{
-                //byte[][] resp = Networking.SendUpdate(Networking.UpdateType.ListUpdate, Encoding.Unicode.GetBytes(retstr), false);
-                //bool fine = false; //Elvileg így az event működésekor is tudja használni, és utána ha minden rendben, akkor törli az objectet
-                Networking.SendUpdateInThread(Networking.UpdateType.ListUpdate, Encoding.Unicode.GetBytes(retstr), null);
-                    /*(e, resp) =>
-                    {
-                        if (resp == null || resp.Length == 0)
-                            fine = true;
-                        foreach (var item in resp) //Ha sehonnan nem kapott választ (egy perc után), újrapróbálkozik
-                        {
-                            if (Networking.ParsePacket(item).Data[0] == 0x01) //2014.09.19.
-                                fine = true;
-                        }*/
-                /*if (fine)
-                    break;*/
-            //}
+            List<string> retstr = new List<string>();
+            retstr.Add(UserID + "_name=" + Name);
+            retstr.Add(UserID + "_message=" + Message);
+            retstr.Add(UserID + "_state=" + State);
+            retstr.Add(UserID + "_username=" + UserName);
+            retstr.Add(UserID + "_email=" + Email);
+            retstr.Add(UserID + "_ispartner=" + false); //Ellenőrizze le, amikor megkapja
+            retstr.Add(UserID + "_lastupdate=" + Program.DateTimeToUnixTime(DateTime.Now));
+            retstr.Add(UserID + "_picupdatetime=" + PicUpdateTime);
+            var task = new Networking.PacketSender(new Networking.PDListUpdate(retstr.ToArray())).SendAsync();
+        }
+
+        private static Image image;
+        public static Image Image
+        { //2015.06.06.
+            get
+            {
+                if (image == null)
+                {
+                    if (!Directory.Exists("pictures"))
+                        Directory.CreateDirectory("pictures");
+                    string[] files = Directory.GetFiles("pictures", UserID + ".*");
+                    if (files.Length > 0)
+                        image = Program.LoadImageFromFile(files[0]);
+                    else
+                        image = UserInfo.NoImage.Clone() as Image; //Ugyanaz, mint a Properties.Resources.noimage
+                }
+                return image;
+            }
+            set
+            {
+                if (image != null)
+                    image.Dispose();
+                image = value;
+                string[] files = Directory.GetFiles("pictures", UserID + ".*");
+                foreach (string file in files)
+                {
+                    if (Path.GetExtension(file) != ".png")
+                        File.Delete(file);
+                }
+                image.Save("pictures\\" + UserID + ".png", ImageFormat.Png);
+                PicUpdateTime = Program.DateTimeToUnixTime(DateTime.Now);
+                var tmp = UserInfo.Select(CurrentUser.UserID);
+                if (tmp != null)
+                {
+                    tmp.Image = value;
+                    tmp.PicUpdateTime = PicUpdateTime;
+                }
+                SendUpdate();
+            }
         }
     }
 }

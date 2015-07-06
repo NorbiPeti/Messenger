@@ -1,0 +1,9 @@
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\Handwriting program\Handwriting program\bin\Release\Handwriting program.dll.config
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\Handwriting program\Handwriting program\bin\Release\Handwriting program.dll
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\Handwriting program\Handwriting program\bin\Release\Handwriting program.pdb
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\Handwriting program\Handwriting program\obj\Release\Handwriting_program.Form1.resources
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\Handwriting program\Handwriting program\obj\Release\Handwriting_program.Handwriting.resources
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\Handwriting program\Handwriting program\obj\Release\Handwriting_program.Properties.Resources.resources
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\Handwriting program\Handwriting program\obj\Release\Handwriting program.csproj.GenerateResource.Cache
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\Handwriting program\Handwriting program\obj\Release\Handwriting program.dll
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\Handwriting program\Handwriting program\obj\Release\Handwriting program.pdb

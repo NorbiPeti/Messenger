@@ -12,7 +12,10 @@ namespace MSGer.tk
     static class Storage
     { //2014.08.07.
         public static string FileName;
-        public static Dictionary<string, string> Settings = new Dictionary<string, string>();
+        public static Dictionary<SettingType, string> Settings = new Dictionary<SettingType, string>(); //2015.05.21.
+        /// <summary>
+        /// Csak betöltéskor (2015.05.24.)
+        /// </summary>
         public static Dictionary<string, string> LoggedInSettings = new Dictionary<string, string>();
         public static readonly string PasswordHash = "PWPassword";
         public static string SaltKey; //Bejelentkezéskor kapja meg
@@ -28,14 +31,10 @@ namespace MSGer.tk
             {
                 if (!loggedin)
                 {
-                    Settings.Add("email", "");
-                    Settings.Add("windowstate", "3");
-                    Settings.Add("lang", CultureInfo.InstalledUICulture.TwoLetterISOLanguageName);
-                    Settings.Add("port", "4510"); //Use this to connect to different users <-- És fogalmam sincs, miért angolul írtam...
-                    Settings.Add("lastusedemail", "0");
-                    Settings.Add("filelen", "-1"); //(long) Maximum fájlméret, ameddig bemásolhatja a memóriába
-                    //Settings.Add("isserver", "");
-                    Settings.Add("chatwindow", "0");
+                    var settings = typeof(SettingType).GetEnumValues();
+                    foreach (SettingType setting in settings)
+                        Settings.Add(setting, ""); //TO!DO: Az alapértelmezett értékeket állítsa be
+                    IsLoaded = true; //2015.06.04.
                 }
             }
             else
@@ -43,11 +42,15 @@ namespace MSGer.tk
                 Parse(Decrypt(Read(loggedin)), loggedin);
                 if (loggedin)
                     UserInfo.Load();
+                if (!loggedin)
+                    IsLoaded = true; //2015.06.14.
             }
         }
 
         public static void Save(bool loggedin)
         {
+            if (!IsLoaded && !loggedin) //!loggedin: 2015.06.14.
+                return; //2015.06.04.
             if (!loggedin)
                 SaltKey = "nologinnologinnologinnologin";
             Write(Encrypt(GetString(loggedin)), loggedin);
@@ -70,7 +73,7 @@ namespace MSGer.tk
             {
                 foreach (var entry in Settings)
                 {
-                    s += entry.Key;
+                    s += (int)entry.Key; //2015.05.21.
                     s += "=";
                     s += entry.Value;
                     s += "\n";
@@ -82,43 +85,42 @@ namespace MSGer.tk
         private static void Parse(string filecontent, bool loggedin)
         {
             string[] splitCache = filecontent.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-            var tmp = splitCache.ToDictionary(
-                                   entry => entry.Substring(0, entry.IndexOf("=")),
-                                   entry => entry.Substring(entry.IndexOf("=") + 1));
             if (loggedin)
-                LoggedInSettings = tmp;
+            {
+                LoggedInSettings = splitCache.ToDictionary(
+                                       entry => entry.Substring(0, entry.IndexOf("=")),
+                                       entry => entry.Substring(entry.IndexOf("=") + 1));
+            }
             else
-                Settings = tmp;
+            {
+                Settings = splitCache.ToDictionary(
+                                       entry => (SettingType)int.Parse(entry.Substring(0, entry.IndexOf("="))), //string --> SettingType: 2015.05.21.
+                                       entry => entry.Substring(entry.IndexOf("=") + 1));
+            }
         }
 
         public static void Parse(string filecontent) //Publikus metódus
         {
             string[] splitCache = filecontent.Split(new string[] { "\n", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
             var tmp = splitCache.ToDictionary(
-                                   entry => "userinfo_" + entry.Substring(0, entry.IndexOf("=")),
+                //entry => "userinfo_" + entry.Substring(0, entry.IndexOf("=")), - 2015.05.10.
+                                   entry => entry.Substring(0, entry.IndexOf("=")),
                                    entry => entry.Substring(entry.IndexOf("=") + 1));
             LoggedInSettings = LoggedInSettings.Concat(tmp)
                          .ToLookup(pair => pair.Key, pair => pair.Value)
                          .ToDictionary(group => group.Key, group => group.Last());
         }
-        
+
         public static byte[] Encrypt(byte[] content, string code)
         {
-            //byte[] plainTextBytes = content;
 
             byte[] keyBytes = new Rfc2898DeriveBytes(PasswordHash, Encoding.ASCII.GetBytes(code)).GetBytes(256 / 8);
             var symmetricKey = new RijndaelManaged() { Mode = CipherMode.CBC, Padding = PaddingMode.None };
             var encryptor = symmetricKey.CreateEncryptor(keyBytes, Encoding.ASCII.GetBytes(VIKey));
 
             byte[] plainTextBytes;
-            //if (content.Length + 4 > keyBytes.Length)
-                /*plainTextBytes = new byte[content.Length + 4];
-            else
-                plainTextBytes = new byte[content.Length + 4];*/
             int targetsize = content.Length + 16 - content.Length % 16; //Hozzáadja a hosszához a hossz 16-tal való osztásának maradékát - Tehát 16-tal osztható lesz
             plainTextBytes = new byte[targetsize];
-            /*Array.Copy(BitConverter.GetBytes(content.Length), plainTextBytes, 4);
-            Array.Copy(content, 0, plainTextBytes, 4, content.Length);*/
             Array.Copy(content, plainTextBytes, content.Length);
 
             byte[] cipherTextBytes;
@@ -150,9 +152,8 @@ namespace MSGer.tk
 
         public static byte[] Decrypt(byte[] b, bool tr, string code)
         {
-            //byte[] cipherTextBytes = b;
             int len = BitConverter.ToInt32(b, 0);
-            byte[] cipherTextBytes = new byte[len];
+            byte[] cipherTextBytes = new byte[b.Length - 4]; //b.Length: 2015.04.03.
             Array.Copy(b, 4, cipherTextBytes, 0, b.Length - 4); //Itt még az eredeti, feltöltött hosszal számol
             byte[] keyBytes = new Rfc2898DeriveBytes(PasswordHash, Encoding.ASCII.GetBytes(code)).GetBytes(256 / 8);
             var symmetricKey = new RijndaelManaged() { Mode = CipherMode.CBC, Padding = PaddingMode.None };
@@ -160,15 +161,9 @@ namespace MSGer.tk
             var decryptor = symmetricKey.CreateDecryptor(keyBytes, Encoding.ASCII.GetBytes(VIKey));
             var memoryStream = new MemoryStream(cipherTextBytes);
             var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read);
-            byte[] plainTextBytes = new byte[cipherTextBytes.Length];
-            //List<byte> plainTextBytes = new List<byte>(); //2014.12.18.
+            byte[] plainTextBytes = new byte[len]; //2015.04.03.
 
             int decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
-            /*int r=0; //2014.12.18.
-            while ((r = cryptoStream.ReadByte()) != -1)
-            { //2014.12.18.
-                plainTextBytes.Add((byte)r);
-            }*/
             memoryStream.Close();
             cryptoStream.Close();
             byte[] ret = new byte[len];
@@ -218,5 +213,18 @@ namespace MSGer.tk
         {
             LoggedInSettings = new Dictionary<string, string>();
         }
+
+        public static bool IsLoaded { get; private set; }
+    }
+    public enum SettingType
+    {
+        Email,
+        WindowState,
+        Lang,
+        Port,
+        LastUsedEmail,
+        FileLen,
+        ChatWindow,
+        Theme
     }
 }

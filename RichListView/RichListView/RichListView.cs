@@ -39,7 +39,7 @@ namespace SzNPProjects
         #region Events
         void Items_ListChanged(object sender, ListChangedEventArgs e)
         {
-            switch(e.ListChangedType)
+            switch (e.ListChangedType)
             {
                 case ListChangedType.ItemAdded:
                     Items[e.NewIndex].Parent = this;
@@ -274,7 +274,7 @@ namespace SzNPProjects
         /// </summary>
         public void RefreshList()
         {
-            if(!AutoUpdate)
+            if (!AutoUpdate)
             {
                 AutoValidate = AutoValidate.Disable;
                 return;

@@ -1,0 +1,36 @@
+v7.0 - 2015.07.05.
+----
+- A hangulatjelek ablaka bevonva a témarendszerbe
+
+v7.1 Tervek:
+----
+- Drag and drop képküldés
+- Plus hangküldéses rendszer
+- Chat-fejek (jelzi, ha üzennek, stb.)
+-- Ugyanaz a rendszer, mint amikor nem külön ablakban jelennek meg a beszélgetések
+-- Billentyûparancsra megjelenítené
+- Átméretezõ animációk (mint a Visual Studio 2013 telepítõje)
+- Új frissítõprogram (többek közt azért is, mert már zárt forráskódú)
+- Csendes mód
+-- Teszteléshez is jól jöhet
+-- Automata bejelentkezés
+-- Bármikor betölthetõ lenne bármelyik ablak
+- Naplózás
+- Jelszótárolás, automatikus bejelentkezés
+-- A felhasználónév tárolása is választható legyen
+- A tématervezõt megoldani
+- Fájlküldést átnézni
+- Több listanézet
+- A changelog-okat letölteni, megjeleníteni egy ablakban
+- Legutóbb küldött üzenet visszavonása 30 másodpercen belül vagy amíg nem érkezik új üzenet
+- Témarendszer: http://www.codeproject.com/Articles/643493/Mozilla-Firefox-CSS-Parser-Ported-to-Csharp
+- A nyelvi fájlok legyenek ilyesmi felépítésûek, mint ez a changelog
+--  Vagy inkább egyszerûen JSON
+- Kódrendezés
+- Hangulatjel-szerkesztõ különálló alkalmazásként
+- Az összes többi szerkesztõt is különálló alkalmazásként megcsinálni
+- A chatikon-listában mutassa elsõként az aktuális felhasználót elkülönítve, akár külön control-ban is, hogy lássa a saját adatait
+- Hangok
+- Több téma támogatása egyszerre (Minecraft resource pack)
+- Átméretezhetõ ChatPanel-ek
+- Takarítás (nem csak kódokat, fájlokat, projekteket)

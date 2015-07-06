@@ -1,0 +1,24 @@
+v6.0 - 2015.05.26., 05.30., 06.04-06., 06.10-11., 06.14-16., 06.25-26., 06.28-30., 07.03-05.
+----
+- Hibakezelés fejlesztve
+-- ErrorHandler form hozzáadva
+--- Az egyetlen form (legalábbis terveim szerint), ahol beépített angol nyelvû szöveg látható (ha nem töltötte még be a fájlokat)
+-- Egyaránt képes kezelni a "fatális" hibákat és az "elfogadható" hibákat is
+- Képkiválasztás mûködõképes állapotban
+-- Most már nem a Temp mappában tárolja a képeket
+-- Most már eltárolja a saját képét is...
+-- És meg is jeleníti a képeket!
+- Számos hibajavítás
+-- Kódformázás (Ctrl+E, D) minden használt forrásfájlon
+- A nyelvi fájlok hibakezelése feljesztve
+- Saját szövegdoboz a nagyobb teljesítmény és a jobb kinézet érdekében
+-- Félbehagyva, találtam jobb alternatívát (FastColoredTextBox)
+--- Továbbra is a végére ugrik üzenetíráskor
+- Pack-ok tárolása saját formátumban (*.npack)
+-- Egy fájlba rakja egy pack hangulatjeleit
+- Hangulatjelkiválasztó ablak
+- Most már automatán átméretezi és áthelyezi a fõablakot, ha átállítjuk a chatablakok helyét (külön ablakban vagy nem)
+- A beérkezõ üzenetekkel csak akkor foglalkozik, ha van a beszélgetésben legalább egy ismerõs (a küldõ ismerõs vagy legalább egy ismerõsnek is küldte)
+- Most már el tudja küldeni a kézírást
+-- És meg is jeleníti! Kivéve, ha a teteje nincs a látható részen, mert akkor nem rajzolja meg
+- A chatablakokban most már az idõzónána megfelelõ idõpont jelenik meg

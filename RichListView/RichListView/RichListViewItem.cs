@@ -239,8 +239,8 @@ namespace SzNPProjects
             for (int i = 0; i < SubItems.Length; i++)
             {
                 //SubItems[i].SetBounds(((i - 1 < 0) ? 0 : Parent.Columns[i - 1].Width),
-                SubItems[i].SetBounds(colwidth+Parent.AutoScrollPosition.X, //AutoScrollPositon: 2014.12.22.
-                    Y+Parent.AutoScrollPosition.Y,
+                SubItems[i].SetBounds(colwidth + Parent.AutoScrollPosition.X, //AutoScrollPositon: 2014.12.22.
+                    Y + Parent.AutoScrollPosition.Y,
                     ((Parent.ColumnAutoFill && i + 1 == Parent.Columns.Length) ? Parent.Width - colwidth : Parent.Columns[i].Width),
                     height, BoundsSpecified.All); //BoundSpecified: 2014.12.22.
                 //lastcolwidth -= Parent.Columns[i].Width;

@@ -8,6 +8,9 @@ using System.Windows.Forms;
 using Khendys.Controls;
 using SzNPProjects;
 using System.Net;
+using System.Drawing;
+using FastColoredTextBoxNS;
+using System.Text.RegularExpressions;
 
 namespace MSGer.tk
 {
@@ -167,7 +170,7 @@ namespace MSGer.tk
                 Update();
             }
         }
-        public int PicUpdateTime
+        public double PicUpdateTime //int-->double: 2015.06.06.
         {
             get
             {
@@ -183,22 +186,10 @@ namespace MSGer.tk
                 Update();
             }
         }
-        public string ImagePath = "noimage.png";
-        /*public struct IPEndPoint - Nincs már szükség az IsServer beállításra
-        {
-            public IPEndPoint IP;
-            public bool IsServer;*/
-            /*public IPEndPoint(IPEndPoint ip)
-            {
-                IP = ip;
-                IsServer = false;
-            }*/
-            /*public IPEndPoint(IPEndPoint ip, bool isserver)
-            {
-                IP = ip;
-                IsServer = isserver;
-            }
-        }*/
+        /// <summary>
+        /// Ha null, akkor NoImage--et jelenítsen meg
+        /// </summary>
+        public Image Image; //2015.05.30.
 
         private static HashSet<IPEndPoint> ips = new HashSet<IPEndPoint>();
         public static HashSet<IPEndPoint> IPs
@@ -233,54 +224,46 @@ namespace MSGer.tk
         ~UserInfo() //2014.10.09.
         {
         }
-        //public int PicUpdateTime = 0;
-        //public string GetImage()
-        public void GetImage(int receivedupdate)
+        public void GetImageFromNetwork(int receivedupdate)
         { //Most már elvileg csak akkor hívja meg, amikor feldolgozza a kapott adatokat, tehát nem a Main Thread-ban
-            string tmp = Path.GetTempPath();
-            if (!Directory.Exists(tmp + "\\MSGer.tk\\pictures")) //2014.08.16. - Áthelyezve, hogy mindig létrehozza, ha kell, és letöltse a képeket
-                Directory.CreateDirectory(tmp + "\\MSGer.tk\\pictures");
-
-            if (this.PicUpdateTime > receivedupdate)
-            {
-                if (File.Exists(tmp + "\\MSGer.tk\\pictures\\" + UserID + ".png"))
-                    this.ImagePath = tmp + "\\MSGer.tk\\pictures\\" + UserID + ".png";
-                else
-                    this.ImagePath = "noimage.png";
+            if (this.PicUpdateTime >= receivedupdate)
+            { //2015.06.06.
+                LoadImageFromFile();
+                return;
             }
 
             //2014.08.16. - A képeket azért nem menti felhasználónként, mert úgyis le tudja tölteni mindenkinek a képét szinte bárki, és amúgy is UserID-val van azonosítva
-            List<byte> sendb = new List<byte>();
-            //sendb.AddRange(BitConverter.GetBytes(CurrentUser.UserID));
-            sendb.AddRange(BitConverter.GetBytes(UserID));
-            sendb.AddRange(BitConverter.GetBytes((File.Exists(tmp + "\\MSGer.tk\\pictures\\" + UserID + ".png")) ? PicUpdateTime : 0));
-            byte[][] bytesb = Networking.SendUpdate(Networking.UpdateType.GetImage, sendb.ToArray(), false);
-            if (bytesb == null || bytesb.All(entry => entry.Length == 0)) //bytesb.All(...): 2014.09.01.
+            var pfs = new Networking.PacketSender(
+                new Networking.PDGetImage(UserID, (Image != null ? PicUpdateTime : 0))).Send(); //Image!=null: 2015.06.06.
+            if (pfs == null || pfs.All(entry => !((Networking.PDGetImage)entry.EData).RSuccess))
             {
-                if (File.Exists(tmp + "\\MSGer.tk\\pictures\\" + UserID + ".png"))
-                    this.ImagePath = tmp + "\\MSGer.tk\\pictures\\" + UserID + ".png";
-                else
-                    this.ImagePath = "noimage.png";
+                LoadImageFromFile(); //2015.06.06.
+                return;
             }
-            bytesb = bytesb.Select(entry => Networking.ParsePacket(entry).Data).ToArray();
-            int[] picupdatetimes = bytesb.Select(b => BitConverter.ToInt32(b, 0)).ToArray();
-            int maxIndex = Array.IndexOf<int>(picupdatetimes, picupdatetimes.Max());
-            //byte[] bytes = bytesb[maxIndex]; //Attól tölti le a képet, akinek a legfrissebb
-            byte[] bytes = new byte[bytesb[maxIndex].Length];
-            Array.Copy(bytesb[maxIndex], 4, bytes, 0, bytes.Length); //Hagyja ki a PicUpdateTime-ot
-
-            if (bytes[0] == 0x00) //Nincs kép, vagy hiba történt
+            IEnumerable<double> picupdatetimes = pfs.Select(entry => ((Networking.PDGetImage)entry.EData).RPicUpdateTime);
+            byte[] bytes = null;
+            double max = picupdatetimes.Max(); //2015.06.06.
+            foreach (var entry in pfs)
             {
-                this.ImagePath =  "noimage.png";
+                if (((Networking.PDGetImage)entry.EData).RPicUpdateTime == max)
+                {
+                    bytes = ((Networking.PDGetImage)entry.EData).RImageData;
+                    break;
+                }
+            }
+
+            if (bytes == null || bytes[0] == 0x00) //Nincs kép, vagy hiba történt
+            {
+                this.Image = null; //2015.05.30.
             }
             else if (bytes[0] == 0x01)
             {
-                this.ImagePath = tmp + "\\MSGer.tk\\pictures\\" + UserID + ".png";
+                LoadImageFromFile(); //2015.06.06.
             }
             else
             { //Mentse el a képet
-                File.WriteAllBytes(tmp + "\\MSGer.tk\\pictures\\" + UserID + ".png", bytes);
-                this.ImagePath = tmp + "\\MSGer.tk\\pictures\\" + UserID + ".png"; //2014.08.16.
+                File.WriteAllBytes("pictures\\" + UserID + ".png", bytes); //2015.06.06. - Először a fogadott formátumban menti el, majd legközelebb már PNG-ként
+                LoadImageFromFile(); //2015.06.06.
             }
         }
         public List<int> GetChatWindows()
@@ -295,17 +278,41 @@ namespace MSGer.tk
             }
             return retlist;
         }
+        private void LoadImageFromFile()
+        { //2015.06.06.
+            //2015.06.14.
+            if (!Directory.Exists("pictures"))
+                Directory.CreateDirectory("pictures");
+            string[] files = Directory.GetFiles("pictures", UserID + ".*");
+            if (files.Length > 0)
+                this.Image = Program.LoadImageFromFile(files[0]);
+            else
+                this.Image = null;
+        }
+        /// <summary>
+        /// Csak a megjelenítéshez, ellenőrzéshez null-check
+        /// </summary>
+        public static Image NoImage = Properties.Resources.noimage; //2015.05.30.
         public static void Load()
         {
+            using (var gr = Graphics.FromImage(NoImage))
+                Theme.SkinThis(typeof(NoImage), gr); //2015.07.03.
             foreach (var entry in Storage.LoggedInSettings)
             {
-                string[] tmp = entry.Key.Split('_');
-                if (tmp[0] != "userinfo")
-                    continue;
-                var tmp2 = new UserInfo();
-                tmp2.UserID = Int32.Parse(tmp[1]);
-                if (!IDIsInList(KnownUsers, tmp2.UserID))
-                    KnownUsers.Add(tmp2);
+                try
+                {
+                    string[] tmp = entry.Key.Split('_');
+                    if (tmp[0] != "userinfo")
+                        continue;
+                    var tmp2 = new UserInfo();
+                    tmp2.UserID = Int32.Parse(tmp[1]);
+                    tmp2.LoadImageFromFile(); //2015.06.14.
+                    if (!IDIsInList(KnownUsers, tmp2.UserID))
+                        KnownUsers.Add(tmp2);
+                }
+                catch
+                {
+                }
             }
         }
         public static bool IDIsInList(List<UserInfo> list, int userid)
@@ -314,14 +321,7 @@ namespace MSGer.tk
         }
         public static UserInfo Select(int userid)
         {
-            try
-            {
-                return KnownUsers.Single(entry => entry.UserID == userid); //2014.09.19.
-            }
-            catch
-            {
-                return null;
-            }
+            return KnownUsers.FirstOrDefault(entry => entry.UserID == userid); //Single-->FirstOrDefault: 2015.06.06.
         }
         public static int GetUserIDFromListID(int ListID)
         {
@@ -340,34 +340,22 @@ namespace MSGer.tk
                 return;
             if (!UpdateTimer.Enabled)
             {
-                UpdateTimer.Interval = 500;
-                UpdateTimer.Tick += UpdateTimerTick;
-                UpdateTimer.Start();
+                if (UpdateTimer.Tag == null || !(bool)UpdateTimer.Tag)
+                {
+                    UpdateTimer.Interval = 500;
+                    UpdateTimer.Tick += UpdateTimerTick;
+                    UpdateTimer.Tag = true;
+                }
+                if (Program.MainF.InvokeRequired)
+                    Program.MainF.Invoke(new Action(() => UpdateTimer.Start()));
+                else
+                    UpdateTimer.Start();
             }
         }
 
         private void UpdateTimerTick(object sender, EventArgs e)
         {
             UpdateTimer.Stop();
-            //Partnerlista frissítése
-            //2014.10.09.
-            /*string imgpath = this.GetImage();
-            if (!(imgpath != "noimage.png" || File.Exists("noimage.png"))) //2014.03.13. - 2014.10.09.
-            {
-                imgpath = "";
-                MessageBox.Show(Language.Translate("noimage_notfound"), Language.Translate("error"));
-            }
-            string state = "";
-            if (this.State == 1)
-                state = " (" + Language.Translate("menu_file_status_online") + ")";
-            else if (this.State == 2)
-                state = " (" + Language.Translate("menu_file_status_busy") + ")";
-            else if (this.State == 3)
-                state = " (" + Language.Translate("menu_file_status_away") + ")";
-            else
-                state = " (" + Language.Translate("offline") + ")";
-            string text = this.Name + state + "\n" + this.Message;
-            */
             if (ListID == -1)
             {
                 int i;
@@ -380,51 +368,20 @@ namespace MSGer.tk
                 }
                 ListID = i;
             }
-            //2014.10.09.
-            /*bool tmp = Program.MainF.contactList.AutoUpdate;
-            Program.MainF.contactList.AutoUpdate = false;
-            while (Program.MainF.contactList.Items.Count <= ListID) //Azt is adja hozzá, ami a kész listaelem lesz
-            {
-                var pictb = new PictureBox();
-                pictb.SizeMode = PictureBoxSizeMode.Zoom;
-                pictb.ImageLocation = imgpath;
-                var listtext = new ExRichTextBox();
-                listtext.Text = text;
-                listtext = TextFormat.Parse(listtext);
-                Program.MainF.contactList.Items.Add(new RichListViewItem(new Control[] { pictb, listtext }));
-            }
-            ((PictureBox)Program.MainF.contactList.Items[ListID].SubItems[0]).ImageLocation = imgpath;
-            Program.MainF.contactList.Items[ListID].SubItems[1].Text = text;
-            Program.MainF.contactList.Items[ListID].SubItems[1] = TextFormat.Parse((ExRichTextBox)Program.MainF.contactList.Items[ListID].SubItems[1]);
-            Program.MainF.contactList.AutoUpdate = tmp;*/
-
             CreateListItem(Program.MainF.contactList, ListID);
         }
 
-        /*internal static int GetPortForIP(IPAddress iPAddress) - Elküldi
-        {
-            throw new NotImplementedException(); //TODO
-        }*/
-
         public void CreateListItem(RichListView listView, int pos)
         {
-            //TO!DO: A fenti kódot átrakni ide, hogy itt létrehozza az item-et
-            //string imgpath = this.GetImage();
-            string imgpath = this.ImagePath; //2014.12.31.
-            if (!(imgpath != "noimage.png" || File.Exists("noimage.png"))) //2014.03.13. - 2014.10.09.
-            {
-                imgpath = "";
-                MessageBox.Show(Language.Translate("noimage_notfound"), Language.Translate("error"));
-            }
             string state = "";
             if (this.State == 1)
-                state = " (" + Language.Translate("menu_file_status_online") + ")";
+                state = " (" + Language.Translate(Language.StringID.Menu_File_Status_Online) + ")";
             else if (this.State == 2)
-                state = " (" + Language.Translate("menu_file_status_busy") + ")";
+                state = " (" + Language.Translate(Language.StringID.Menu_File_Status_Busy) + ")";
             else if (this.State == 3)
-                state = " (" + Language.Translate("menu_file_status_away") + ")";
+                state = " (" + Language.Translate(Language.StringID.Menu_File_Status_Away) + ")";
             else
-                state = " (" + Language.Translate("offline") + ")";
+                state = " (" + Language.Translate(Language.StringID.Offline) + ")";
             string text = this.Name + state + "\n" + this.Message;
 
             TMPListID = pos;
@@ -436,17 +393,51 @@ namespace MSGer.tk
             {
                 var pictb = new PictureBox();
                 pictb.SizeMode = PictureBoxSizeMode.Zoom;
-                pictb.ImageLocation = imgpath;
-                var listtext = new ExRichTextBox();
-                listtext.Text = text;
-                listtext = TextFormat.Parse(listtext);
-                listView.Items.Add(new RichListViewItem(new Control[] { pictb, listtext }));
+                pictb.Image = Image; //2015.05.30.
+                var listtext = new FastColoredTextBox(); //2015.07.05.
+                listtext.ShowLineNumbers = false; //2015.07.05.
+                var style = new TextBoxHelpers.GifImageStyle(listtext); //2015.07.05.
+                foreach (var item in TextFormat.TextFormats)
+                { //2015.07.05.
+                    foreach (var item2 in item.Emoticons)
+                    {
+                        style.ImagesByText.Add(item2.Value, item2.Image);
+                    }
+                }
+                listtext.Text = text; //2015.07.05.
+                listtext.TextChanged += delegate(object sender, TextChangedEventArgs e)
+                {
+                    if (style == null)
+                        return;
+                    e.ChangedRange.ClearStyle(StyleIndex.All);
+                    foreach (var key in style.ImagesByText.Keys)
+                    {
+                        string pattern = Regex.Replace(key, RegexSpecSymbolsPattern, "\\$0");
+                        e.ChangedRange.SetStyle(style, pattern);
+                    }
+                };
+                style.StartAnimation(); //2015.07.05.
+                listtext.OnTextChanged(); //2015.07.05.
+                listView.Items.Add(new RichListViewItem(new Control[] { pictb, listtext })); //2015.07.05.
             }
-            ((PictureBox)listView.Items[TMPListID].SubItems[0]).ImageLocation = imgpath;
+            if (Image == null) //2015.05.30.
+                ((PictureBox)listView.Items[TMPListID].SubItems[0]).Image = UserInfo.NoImage; //2015.05.30.
+            else
+                ((PictureBox)listView.Items[TMPListID].SubItems[0]).Image = Image; //2015.05.30.
             listView.Items[TMPListID].SubItems[1].Text = text;
-            listView.Items[TMPListID].SubItems[1] = TextFormat.Parse((ExRichTextBox)listView.Items[TMPListID].SubItems[1]);
             listView.AutoUpdate = tmp;
             listView.ResumeLayout(true); //2014.12.21.
+        }
+        const string RegexSpecSymbolsPattern = @"[\^\$\[\]\(\)\.\\\*\+\|\?\{\}]";
+
+        public override string ToString()
+        { //2015.04.03.
+            string str = "";
+            foreach (var setting in Storage.LoggedInSettings)
+                if (setting.Key.StartsWith("userinfo_" + UserID + "_"))
+                    str += setting.Key.Substring(setting.Key.IndexOf(UserID.ToString())) + "=" + setting.Value + "\n";
+            str = str.Remove(str.Length - 1);
+            return str;
         }
     }
 }

@@ -1,0 +1,10 @@
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\MSGerTextBox\bin\Debug\MSGerTextBox.exe.config
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\MSGerTextBox\bin\Debug\MSGerTextBox.exe
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\MSGerTextBox\bin\Debug\MSGerTextBox.pdb
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\MSGerTextBox\obj\Debug\MSGerTextBox.Properties.Resources.resources
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\MSGerTextBox\obj\Debug\MSGerTextBox.csproj.GenerateResource.Cache
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\MSGerTextBox\obj\Debug\MSGerTextBox.exe
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\MSGerTextBox\obj\Debug\MSGerTextBox.pdb
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\MSGerTextBox\obj\Debug\SzNPProjects.TextBox.Form1.resources
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\MSGerTextBox\obj\Debug\SzNPProjects.TextBox.MSGerTextBox.resources
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\MSGerTextBox\obj\Debug\MSGerTextBox.csprojResolveAssemblyReference.cache

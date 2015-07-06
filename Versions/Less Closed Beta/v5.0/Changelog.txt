@@ -1,0 +1,60 @@
+v5.0 (Packer Update) - 2015.03.26., 03.28-29., 04.03., 04.05-06., 04.08., 04.10-11., 04.28., 05.03., 05.10., 05.14-17., 05.21-24., 05.26.
+----
+Újdonságok:
+- A program indulásakor leellenõrzi, hogy minden nyelvi fájl tartalmaz-e minden szöveget, és hogy van-e felesleges
+- Szkriptek
+-- Automatikusan lefordítja a C# (és valószínûleg bármely egyéb .NET) fájlokat, és betölti DLL-ként
+- Szkritíró
+-- A szkript írása közben ellenõrzi a hibákat (mint a Visual Studio)
+- Egységes pack kezelõ
+-- Automatikusan betölt mindent a mappákból
+- A chat rész most már ténylegesen mûködõképes ismét!
+- Most már nem tölti be az összes nyelvet, úgyis csak egyre lesz szükség egyszerre
+- Beérkezett fájlok mappájának megnyitása mûködik
+- Zárt forráskód (2015.05.17.)
+- A program indulásakor azt is leellenõrzi, hogy a beállítások között van-e felesleges
+-- program.db eredeti fájlmérete: 120 bájt
+-- program.db új fájlmérete: 56 bájt
+- Most már tudunk saját magunkkal is beszélgetést kezdeményezni
+-- Hasznos lehet a naplózással kombinálva
+- Témarendszer
+- Most már be lehet állítani a portszámot
+
+Hibajavítások:
+- Updater: A szövegdoboz most már csak olvasható
+- Nagytakarítás a kódban (a legtöbb megjegyzésbe tett kód törölve)
+- A bejelentkezõablakot teljes méretre lehetett állítani a címsorra duplán kattintva - javítva
+- A hálózati rendszer most már sokkal stabilabb
+-- A válaszokat csak a küldõnek küldi vissza
+
+Fejlesztések:
+- Hálózati rendszer újraírva (nagyrészt 03.28-29.)
+- Bejelentkezési folyamat fejlesztve
+- MainForm control-jai javítva
+- További hálózati fejlesztések
+-- Párhuzamos adatcsomag-kezelés (tud újabb adatot küldeni, mielõtt választ kapna az elõzõre)
+-- Most már nem járatja feleslegesen a CPU-t, folyamatosan ellenõrizve a válasz érkezését
+
+v6.0 Tervek:
+----
+- Drag and drop képküldés
+- Plus hangküldéses rendszer
+- Chat-fejek (jelzi, ha üzennek, stb.)
+-- Ugyanaz a rendszer, mint amikor nem külön ablakban jelennek meg a beszélgetések
+- Átméretezõ animációk (mint a Visual Studio 2013 telepítõje)
+- Új frissítõprogram (többek közt azért is, mert már zárt forráskódú)
+- Csendes mód
+-- Teszteléshez is jól jöhet
+-- Automata bejelentkezés
+-- Bármikor betölthetõ lenne bármelyik ablak
+- Naplózás
+- Hibakezelés fejlesztése
+- Jelszótárolás, automatikus bejelentkezés
+-- A felhasználónév tárolása is automatikus legyen
+- *.pack a tényleges összecsomagoláshoz, akár ZIP formátumban is
+- A tématervezõt megoldani
+- Hangulatjelkezelõ ablak
+- Képfeltöltés
+- Fájlküldést átnézni
+- Több listanézet
+- A noimage.png-t beágyazni a programba, vagy inkább a témarendszerbe

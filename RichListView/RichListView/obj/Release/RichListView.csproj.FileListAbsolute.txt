@@ -6,3 +6,11 @@ D:\Z - Norbi cucca\0 Projektek\RichListView\RichListView\RichListView\obj\Releas
 D:\Z - Norbi cucca\0 Projektek\RichListView\RichListView\RichListView\obj\Release\RichListView.csproj.GenerateResource.Cache
 D:\Z - Norbi cucca\0 Projektek\RichListView\RichListView\RichListView\obj\Release\RichListView.dll
 D:\Z - Norbi cucca\0 Projektek\RichListView\RichListView\RichListView\obj\Release\RichListView.pdb
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\RichListView\RichListView\bin\Release\RichListView.dll
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\RichListView\RichListView\bin\Release\RichListView.pdb
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\RichListView\RichListView\bin\Release\Khendys.Controls.ExRichTextBox.pdb
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\RichListView\RichListView\obj\Release\RichListView.csprojResolveAssemblyReference.cache
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\RichListView\RichListView\obj\Release\SzNPProjects.RichListView.resources
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\RichListView\RichListView\obj\Release\RichListView.csproj.GenerateResource.Cache
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\RichListView\RichListView\obj\Release\RichListView.dll
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\RichListView\RichListView\obj\Release\RichListView.pdb

@@ -7,3 +7,5 @@ D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\MSGerTextBox\obj\Debug\MSGe
 D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\MSGerTextBox\obj\Debug\MSGerTextBox.csproj.GenerateResource.Cache
 D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\MSGerTextBox\obj\Debug\MSGerTextBox.exe
 D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\MSGerTextBox\obj\Debug\MSGerTextBox.pdb
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\MSGerTextBox\bin\Debug\MSGerTextBox.exe.CodeAnalysisLog.xml
+D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\MSGerTextBox\bin\Debug\MSGerTextBox.exe.lastcodeanalysissucceeded

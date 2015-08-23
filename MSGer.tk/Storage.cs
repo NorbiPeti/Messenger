@@ -125,16 +125,24 @@ namespace MSGer.tk
 
             byte[] cipherTextBytes;
 
-            using (var memoryStream = new MemoryStream())
+            //using (var memoryStream = new MemoryStream())
+            MemoryStream memoryStream = null;
+            try
             {
+                memoryStream = new MemoryStream();
                 using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
                 {
                     cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
                     cryptoStream.FlushFinalBlock();
                     cipherTextBytes = memoryStream.ToArray();
-                    cryptoStream.Close();
+                    //cryptoStream.Close();
                 }
-                memoryStream.Close();
+                //memoryStream.Close();
+            }
+            finally //Example of CA2202 solution
+            {
+                if (memoryStream != null)
+                    memoryStream.Dispose();
             }
             byte[] final = new byte[cipherTextBytes.Length + 4];
             Array.Copy(BitConverter.GetBytes(cipherTextBytes.Length), final, 4);
@@ -164,7 +172,7 @@ namespace MSGer.tk
             byte[] plainTextBytes = new byte[len]; //2015.04.03.
 
             int decryptedByteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
-            memoryStream.Close();
+            //memoryStream.Close();
             cryptoStream.Close();
             byte[] ret = new byte[len];
             Array.Copy(plainTextBytes, ret, len);

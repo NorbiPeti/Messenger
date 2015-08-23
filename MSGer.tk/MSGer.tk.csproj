@@ -162,6 +162,7 @@
     <Compile Include="Forms\SettingsPanels\SettingsPanelPersonal.Designer.cs">
       <DependentUpon>SettingsPanelPersonal.cs</DependentUpon>
     </Compile>
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="TextBoxHelpers.cs" />
     <Compile Include="Forms\ThemeDesigner.cs">
       <SubType>Form</SubType>

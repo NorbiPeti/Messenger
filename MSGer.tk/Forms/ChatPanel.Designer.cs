@@ -13,6 +13,8 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
+            style.Dispose(); //2015.08.23.
+            styleRecent.Dispose(); //2015.08.23.
             if (disposing && (components != null))
             {
                 components.Dispose();

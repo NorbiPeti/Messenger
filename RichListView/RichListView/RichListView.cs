@@ -87,9 +87,9 @@ namespace SzNPProjects
             }
             RefreshList();
         }
-        public event EventHandler<int> ItemClicked;
-        public event EventHandler<int> ItemDoubleClicked;
-        public event EventHandler<int> ItemRightClicked;
+        public event EventHandler<ItemClickEventArgs> ItemClicked;
+        public event EventHandler<ItemClickEventArgs> ItemDoubleClicked;
+        public event EventHandler<ItemClickEventArgs> ItemRightClicked;
         #endregion
 
         #region Properties
@@ -323,7 +323,7 @@ namespace SzNPProjects
             }*/
             sender.Selected = true;
             if (ItemClicked != null) //2014.08.30.
-                ItemClicked(sender, Items.IndexOf(sender));
+                ItemClicked(sender, new ItemClickEventArgs(Items.IndexOf(sender)));
             //}
             //catch(NullReferenceException)
             //{
@@ -337,7 +337,7 @@ namespace SzNPProjects
             //var index = Items.IndexOf((RichListViewItem)sender);
             var index = Items.IndexOf(sender);
             if (ItemDoubleClicked != null) //2014.08.30.
-                ItemDoubleClicked(sender, index);
+                ItemDoubleClicked(sender, new ItemClickEventArgs(index));
             for (int i = 0; i < Items[index].SubItems.Length; i++)
                 if (Items[index].SubItems[i].GetType().IsSubclassOf(typeof(TextBoxBase)))
                     ((TextBoxBase)Items[index].SubItems[i]).SelectionLength = 0;
@@ -351,7 +351,7 @@ namespace SzNPProjects
             //try
             //{
             if (ItemRightClicked != null) //2014.08.30. - 2014.09.01. (ItemClicked javítva ItemRightClicked-re)
-                ItemRightClicked(sender, Items.IndexOf(sender));
+                ItemRightClicked(sender, new ItemClickEventArgs(Items.IndexOf(sender)));
             //}
             //catch (NullReferenceException)
             //{

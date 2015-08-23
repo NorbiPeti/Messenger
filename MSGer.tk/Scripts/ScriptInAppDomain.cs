@@ -13,6 +13,7 @@ namespace MSGer.tk
     [Serializable]
     public class ScriptInAppDomain
     {
+        [NonSerialized]
         private AppDomain appdomain;
         private string path;
         public string Path

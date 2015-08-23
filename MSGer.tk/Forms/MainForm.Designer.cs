@@ -709,8 +709,8 @@
             this.contactList.SelectionColor = System.Drawing.Color.Aqua;
             this.contactList.Size = new System.Drawing.Size(494, 471);
             this.contactList.TabIndex = 0;
-            this.contactList.ItemDoubleClicked += new System.EventHandler<int>(this.contactList_ItemDoubleClicked);
-            this.contactList.ItemRightClicked += new System.EventHandler<int>(this.contactList_ItemRightClicked);
+            this.contactList.ItemDoubleClicked += new System.EventHandler<SzNPProjects.ItemClickEventArgs>(this.contactList_ItemDoubleClicked);
+            this.contactList.ItemRightClicked += new System.EventHandler<SzNPProjects.ItemClickEventArgs>(this.contactList_ItemRightClicked);
             // 
             // MainPanel
             // 

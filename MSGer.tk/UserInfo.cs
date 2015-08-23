@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 
 namespace MSGer.tk
 {
-    public partial class UserInfo
+    public partial class UserInfo : IDisposable
     {
         /*
          * 2014.03.07.
@@ -219,9 +219,6 @@ namespace MSGer.tk
 
 
         public UserInfo()
-        {
-        }
-        ~UserInfo() //2014.10.09.
         {
         }
         public void GetImageFromNetwork(int receivedupdate)
@@ -439,5 +436,40 @@ namespace MSGer.tk
             str = str.Remove(str.Length - 1);
             return str;
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    UpdateTimer.Dispose(); //2015.08.23.
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~UserInfo() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

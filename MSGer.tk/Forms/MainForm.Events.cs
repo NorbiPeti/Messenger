@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SzNPProjects;
 
 namespace MSGer.tk
 {
@@ -197,9 +198,9 @@ namespace MSGer.tk
             }
         }
 
-        private void contactList_ItemDoubleClicked(object sender, int e)
+        private void contactList_ItemDoubleClicked(object sender, ItemClickEventArgs e)
         {
-            int uid = UserInfo.GetUserIDFromListID(e);
+            int uid = UserInfo.GetUserIDFromListID(e.ItemIndex);
             OpenSendMessage(uid);
         }
 
@@ -219,10 +220,10 @@ namespace MSGer.tk
             }
         }
 
-        private void contactList_ItemRightClicked(object sender, int e)
+        private void contactList_ItemRightClicked(object sender,ItemClickEventArgs e)
         {
-            contactList.Items[e].Selected = true;
-            listPartnerMenu.Tag = e;
+            contactList.Items[e.ItemIndex].Selected = true;
+            listPartnerMenu.Tag = e.ItemIndex;
             listPartnerMenu.Show(Cursor.Position);
         }
 

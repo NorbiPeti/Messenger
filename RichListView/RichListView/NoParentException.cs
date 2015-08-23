@@ -5,6 +5,7 @@ using System.Text;
 
 namespace SzNPProjects
 {
+    [Serializable]
     class NoParentException : Exception
     {
         /*public override System.Collections.IDictionary Data

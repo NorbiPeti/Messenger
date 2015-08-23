@@ -45,7 +45,7 @@ namespace MSGer.tk
                 var ms = new MemoryStream(buf); //2015.06.06.
                 ms.Seek(0, SeekOrigin.Begin); //2015.06.06.
                 var bitmap = new Bitmap(ms);
-                ms.Dispose(); //2015.06.06.
+                //ms.Dispose(); //2015.06.06.
                 Emoticon emoticon = new Emoticon(id); //2015.06.06.
                 bitmap.MakeTransparent(Color.White); //2015.06.06.
                 emoticon.Image = (Bitmap)bitmap.Clone(); //2015.07.05.
@@ -54,7 +54,7 @@ namespace MSGer.tk
             }
             Name = Path.GetFileNameWithoutExtension(filename); //2015.06.06.
             TextFormats.Add(this); //2015.06.06.
-            fs.Dispose(); //2015.06.06.
+            //fs.Dispose(); //2015.06.06.
             br.Dispose(); //2015.06.06.
             return true;
         }

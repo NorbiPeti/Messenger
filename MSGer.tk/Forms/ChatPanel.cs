@@ -1,6 +1,5 @@
 ﻿using System; //Copyright (c) NorbiPeti 2015 - See LICENSE file
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Linq;
@@ -9,8 +8,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Net;
-using System.Net.Sockets;
-using HdSystemLibrary.IO;
 using System.Diagnostics;
 using Handwriting_program;
 using FastColoredTextBoxNS;

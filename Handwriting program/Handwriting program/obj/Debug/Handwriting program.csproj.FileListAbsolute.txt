@@ -16,4 +16,3 @@ D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\Handwriting program\Handwri
 D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\Handwriting program\Handwriting program\obj\Debug\Handwriting program.csproj.GenerateResource.Cache
 D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\Handwriting program\Handwriting program\obj\Debug\Handwriting program.dll
 D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\Handwriting program\Handwriting program\obj\Debug\Handwriting program.pdb
-D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\Handwriting program\Handwriting program\obj\Debug\Handwriting program.csprojResolveAssemblyReference.cache

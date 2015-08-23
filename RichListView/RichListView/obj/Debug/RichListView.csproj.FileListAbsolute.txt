@@ -12,4 +12,3 @@ D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\RichListView\RichListView\o
 D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\RichListView\RichListView\obj\Debug\RichListView.csproj.GenerateResource.Cache
 D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\RichListView\RichListView\obj\Debug\RichListView.dll
 D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\RichListView\RichListView\obj\Debug\RichListView.pdb
-D:\Z - Norbi cucca\0 Projektek\MSGer.tk\0 Repository\RichListView\RichListView\obj\Debug\RichListView.csprojResolveAssemblyReference.cache

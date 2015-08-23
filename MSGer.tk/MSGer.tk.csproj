@@ -117,7 +117,6 @@
       <DependentUpon>ChatPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="CurrentUser.cs" />
-    <Compile Include="ErrorHandling_REMOVE.cs" />
     <Compile Include="Forms\InvitePartner.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -215,7 +214,6 @@
       <DependentUpon>PartnerInformation.cs</DependentUpon>
     </Compile>
     <Compile Include="Scripts\ScriptInAppDomain.cs" />
-    <Compile Include="ProgressStatistic.cs" />
     <Compile Include="Forms\ScripterWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -230,7 +228,6 @@
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Storage.cs" />
-    <Compile Include="StreamHelper.cs" />
     <Compile Include="TextFormat.cs" />
     <Compile Include="Theme\NoImage.cs" />
     <Compile Include="Theme\Theme.cs" />

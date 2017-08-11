@@ -1,4 +1,4 @@
-v7.0 - 2015.07.05-06., 08.23.
+v7.0 - 2015.07.05-06., 08.23-24., 08.26.
 ----
 - A hangulatjelek ablaka bevonva a témarendszerbe
 - Átállva Git-re

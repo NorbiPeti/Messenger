@@ -26,7 +26,8 @@ namespace MSGer.tk
             SetState,
             IsPartner,
             KeepActive,
-            CheckUser
+            CheckUser,
+            ErrorReport
         }
         public const string WebAddress = "http://msger.url.ph"; //TODO: HTTPS
         private static int Tries = 0;

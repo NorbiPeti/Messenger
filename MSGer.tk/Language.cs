@@ -228,7 +228,14 @@ namespace MSGer.tk
             Text,
             AreYouSure,
             Handwriting,
-            FileReceived
+            FileReceived,
+            NoUserNameForPasswordReset,
+            DoYouWantNewPassword,
+            NonexistentUser,
+            LinkAlreadySent,
+            LinkSent,
+            LinkNotSent,
+            LanguageEditor
         } //TODO: Egyszerűsíteni az azonosítókat, nagyjából jelentsék azt, amit, és semmi több (pl. ne Menu_File_...)
         #endregion
 

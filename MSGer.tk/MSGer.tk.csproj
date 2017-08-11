@@ -162,6 +162,12 @@
     <Compile Include="Forms\SettingsPanels\SettingsPanelPersonal.Designer.cs">
       <DependentUpon>SettingsPanelPersonal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\LanguageEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LanguageEditorForm.Designer.cs">
+      <DependentUpon>LanguageEditorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="NativeMethods.cs" />
     <Compile Include="TextBoxHelpers.cs" />
     <Compile Include="Forms\ThemeDesigner.cs">
@@ -313,6 +319,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ThemeDesigner.resx">
       <DependentUpon>ThemeDesigner.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LanguageEditorForm.resx">
+      <DependentUpon>LanguageEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

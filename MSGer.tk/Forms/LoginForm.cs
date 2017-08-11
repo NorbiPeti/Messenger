@@ -153,21 +153,27 @@ namespace MSGer.tk
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             if (textBox1.Text.Length == 0)
-            { //TODO: Fordítás
-                MessageBox.Show("Nincs megadva felhasználónév."); //Translate!
+            {
+                //MessageBox.Show("Nincs megadva felhasználónév."); //Translate!
+                MessageBox.Show(Language.Translate(Language.StringID.NoUserNameForPasswordReset));
                 return;
             }
-            if (MessageBox.Show("Új jelszót kérsz a megadott névhez?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            //if (MessageBox.Show("Új jelszót kérsz a megadott névhez?", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show(Language.Translate(Language.StringID.DoYouWantNewPassword), "", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 string ret = Networking.SendRequest(Networking.RequestType.ResetPass, textBox1.Text, 0, false);
                 if (ret == "nouser")
-                    MessageBox.Show("A megadott felhasználó nem létezik.");
+                    //MessageBox.Show("A megadott felhasználó nem létezik.");
+                    MessageBox.Show(Language.Translate(Language.StringID.NonexistentUser));
                 else if (ret == "already")
-                    MessageBox.Show("A link MÁR el lett küldve az E-mail címedre.");
+                    //MessageBox.Show("A link MÁR el lett küldve az E-mail címedre.");
+                    MessageBox.Show(Language.Translate(Language.StringID.LinkAlreadySent));
                 else if (ret == "sent")
-                    MessageBox.Show("A link elküldve az E-mail címedre.");
+                    //MessageBox.Show("A link elküldve az E-mail címedre.");
+                    MessageBox.Show(Language.Translate(Language.StringID.LinkSent));
                 else if (ret.Contains("notsent"))
-                    MessageBox.Show("A link NEM lett elküldve az E-mail címedre.\nHiba: " + ret.Remove(ret.IndexOf("notsent"), "notsent".Length + 1));
+                    //MessageBox.Show("A link NEM lett elküldve az E-mail címedre.\nHiba: " + ret.Remove(ret.IndexOf("notsent"), "notsent".Length + 1));
+                    MessageBox.Show(Language.Translate(Language.StringID.LinkNotSent)+"\n"+Language.Translate(Language.StringID.Error) + ret.Remove(ret.IndexOf("notsent"), "notsent".Length + 1));
                 else
                     MessageBox.Show("Ismeretlen hiba:\n" + ret);
             }

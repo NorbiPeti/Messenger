@@ -132,7 +132,8 @@ namespace MSGer.tk
 
         private void sendbtn_Click(object sender, EventArgs e)
         {
-            //TODO: Hibajelentés
+            //TODO: Hibajelentés szerveroldalon
+            Networking.SendRequest(Networking.RequestType.ErrorReport, textBox1.Text, 0, false); //2015.08.28.
         }
     }
     public enum ErrorType

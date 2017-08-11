@@ -15,9 +15,9 @@ namespace MSGer.tk
         public Emoticons()
         {
             InitializeComponent();
-            label1.Text = Language.Translate(Language.StringID.Emoticons); //TODO: A ...-t a menüknél mindig adja hozzá
+            label1.Text = Language.Translate(Language.StringID.Emoticons);
             this.Text = label1.Text;
-            addbtn.Text = Language.Translate(Language.StringID.Add); //TODO: A teljesen megegyező string-eket jelezze
+            addbtn.Text = Language.Translate(Language.StringID.Add);
             removebtn.Text = Language.Translate(Language.StringID.Remove);
             closebtn.Text = Language.Translate(Language.StringID.Close);
             label2.Text = Language.Translate(Language.StringID.SelectImage);

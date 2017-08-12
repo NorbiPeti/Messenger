@@ -1,7 +1,0 @@
-Most Closed Beta - v1.0-v9.0
---------
-2013.08.08.-2014.04.18.
-
-Igazán csak februárban kezdtem el dolgozni rajta, ezért nincs 1.0-ás verzió, nem tudtam, mit változtattam rajta, ezért nem hagytam meg. Február óta, két hónap alatt olyan fejlõdést ért el ez a program velem együtt, amit nem gondoltam, hogy ilyen hamar megtörténik. Vége az elsõ tesztelõ idõszaknak a háromból. Mostantól beveszek másokat is a tesztelésbe, aktívan használom a programot akkor is, ha nem fejlesztem.
-
-Rengeteget írtam már ebbe a programba, és még sok kód vár arra, hogy beleírjam...

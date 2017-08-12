@@ -1,2 +1,0 @@
-menu_file=File
-menu_file_logout=Logout

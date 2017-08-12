@@ -1,9 +1,0 @@
-v2.2 - 2014.07.27.
-----
-(Belsõ verziószám: 2.2.2.0)
-- "Személyes" felirat lefordítva a beállításoknál
-- Önkitömörítõ telepítõprogram
--- Parancsikonokat is létrehoz
-- Hosszas idõk után újra Release verzió...
-- Az eddigi otthagyott Release verziók visszamenõleg törölve
-- A Kilépés opció mostantól azonnal leállítja a programot
